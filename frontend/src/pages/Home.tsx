@@ -9,6 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchKeywordStats().then((stats) => {
+      console.log("📊 stats:", stats);
       const formatted = Object.entries(stats).map(([k, v]) => ({
         text: k,
         value: v
