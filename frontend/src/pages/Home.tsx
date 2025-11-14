@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchStats } from "../api/reviews";
+import { fetchKeywordStats } from "../api/reviews";
 import WordCloud from "../components/WordCloud";
 import { useNavigate } from "react-router-dom";
 
@@ -8,10 +8,10 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchStats().then((data) => {
-      const formatted = Object.entries(data).map(([key, value]) => ({
-        text: key,
-        value: value as number,
+    fetchKeywordStats().then((stats) => {
+      const formatted = Object.entries(stats).map(([k, v]) => ({
+        text: k,
+        value: v
       }));
       setWords(formatted);
     });
@@ -20,14 +20,7 @@ export default function Home() {
   return (
     <div style={{ padding: 24 }}>
       <h1>리뷰 키워드</h1>
-  
-      <div style={{ border: "1px solid red", width: 600, height: 400 }}>
-        <WordCloud
-          words={words}
-          onWordClick={(text) => navigate(`/keyword/${text}`)}
-        />
-      </div>
+      <WordCloud words={words} onWordClick={(text) => navigate(`/keyword/${text}`)} />
     </div>
   );
-  
 }
