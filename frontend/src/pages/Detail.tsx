@@ -6,6 +6,9 @@ import Header from "../components/Header";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import "./Detail.css";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 
 interface Review {
   id: string;
@@ -125,10 +128,17 @@ export default function Detail() {
                   )}
 
                   {review.code_snippet && (
-                    <pre className="code-snippet">
-                      <code>{review.code_snippet}</code>
-                    </pre>
-                  )}
+                    <SyntaxHighlighter
+                    language="diff"
+                    style={prism}
+                    wrapLines
+                    showLineNumbers={false}
+                  >
+                    {review.code_snippet.replace(/\\n/g, "\n")}
+                  </SyntaxHighlighter>
+                  
+                    )}
+
                 </div>
 
                 {review.url && (
