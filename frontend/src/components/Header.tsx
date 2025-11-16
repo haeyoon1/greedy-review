@@ -29,7 +29,7 @@ export default function Header({ title, showBackButton = false }: HeaderProps) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
             </button>
           )}

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import "./Container.css";
 
 interface ContainerProps {
@@ -10,7 +10,7 @@ interface ContainerProps {
 export default function Container({
   children,
   maxWidth = "lg",
-  className = ""
+  className = "",
 }: ContainerProps) {
   return (
     <div className={`container container-${maxWidth} ${className}`}>

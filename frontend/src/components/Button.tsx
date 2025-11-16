@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import "./Button.css";
 
 interface ButtonProps {
@@ -25,7 +25,9 @@ export default function Button({
   return (
     <button
       type={type}
-      className={`btn btn-${variant} btn-${size} ${fullWidth ? 'btn-full' : ''} ${className}`}
+      className={`btn btn-${variant} btn-${size} ${
+        fullWidth ? "btn-full" : ""
+      } ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

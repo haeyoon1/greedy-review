@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import "./Card.css";
 
 interface CardProps {
@@ -14,11 +14,13 @@ export default function Card({
   variant = "default",
   padding = "md",
   className = "",
-  onClick
+  onClick,
 }: CardProps) {
   return (
     <div
-      className={`card card-${variant} card-padding-${padding} ${className} ${onClick ? 'card-clickable' : ''}`}
+      className={`card card-${variant} card-padding-${padding} ${className} ${
+        onClick ? "card-clickable" : ""
+      }`}
       onClick={onClick}
     >
       {children}
