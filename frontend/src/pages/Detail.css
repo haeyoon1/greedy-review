@@ -50,7 +50,7 @@ pre .line.meta {
   border-bottom: 1px solid #e1e4e8;
 }
 
-/* GitHub 스타일 문자열/연산자 색상 */
+/* GitHub 문자열/연산자 */
 .token.operator {
   color: #cf222e !important;
 }
@@ -60,8 +60,8 @@ pre .line.meta {
 }
 
 /* ================================
-     DETAIL PAGE 기본 레이아웃
-     ================================ */
+       DETAIL PAGE 기본 레이아웃
+       ================================ */
 
 .detail-page {
   min-height: 100vh;
@@ -107,8 +107,8 @@ pre .line.meta {
 }
 
 /* ================================
-     Loading
-     ================================ */
+       Loading
+       ================================ */
 
 .loading-container {
   display: flex;
@@ -141,8 +141,8 @@ pre .line.meta {
 }
 
 /* ================================
-     Empty State
-     ================================ */
+       Empty State
+       ================================ */
 
 .empty-reviews {
   text-align: center;
@@ -166,8 +166,8 @@ pre .line.meta {
 }
 
 /* ================================
-     Reviews List & Card
-     ================================ */
+       Reviews List & Card
+       ================================ */
 
 .reviews-list {
   display: flex;
@@ -252,8 +252,8 @@ pre .line.meta {
 }
 
 /* ================================
-     Markdown 텍스트
-     ================================ */
+       Markdown 텍스트
+       ================================ */
 
 .review-comment {
   font-size: 1rem;
@@ -306,8 +306,20 @@ pre .line.meta {
 }
 
 /* ================================
-     Mobile
-     ================================ */
+       Keyword Highlight (for comments)
+       ================================ */
+
+.keyword-highlight {
+  background-color: #e6ffed;
+  color: #22863a;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* ================================
+       Mobile
+       ================================ */
 
 @media (max-width: 768px) {
   .detail-header {

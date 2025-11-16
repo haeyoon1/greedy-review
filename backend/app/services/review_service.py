@@ -39,7 +39,15 @@ class ReviewService:
                     matches.append(keyword)
 
         counter = Counter(matches)
-        return dict(counter.most_common(50))
+
+        # 🔥 count >= 4 인 키워드만 반환
+        filtered = {k: v for k, v in counter.items() if v >= 4}
+
+        # 🔥 기존처럼 상위 50개만
+        sorted_filtered = dict(sorted(filtered.items(), key=lambda x: x[1], reverse=True)[:30])
+
+        return sorted_filtered
+
     
     def get_reviews_by_keyword(self, keyword: str):
         keyword = keyword.lower()
@@ -50,4 +58,3 @@ class ReviewService:
                 result.append(r)
 
         return result
-

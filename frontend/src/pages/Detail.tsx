@@ -94,7 +94,7 @@ export default function Detail() {
                 padding="lg"
                 className="review-card"
               >
-                <ReviewCard review={review} />
+                <ReviewCard review={review} keyword={name} />
               </Card>
             ))}
           </div>
@@ -104,10 +104,23 @@ export default function Detail() {
   );
 }
 
-/* -------------------------------- */
+/* -------------------------------------------------------------- */
 /* 리뷰 카드 */
-/* -------------------------------- */
-function ReviewCard({ review }: { review: Review }) {
+/* -------------------------------------------------------------- */
+function groupByCodeSnippet(reviews: Review[]) {
+  const groups: Record<string, Review[]> = {};
+
+  for (const r of reviews) {
+    const key = (r.code_snippet || "").trim();
+
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(r);
+  }
+
+  return groups;
+}
+
+function ReviewCard({ review, keyword }: { review: Review; keyword?: string }) {
   return (
     <>
       <div className="review-header">
@@ -116,7 +129,7 @@ function ReviewCard({ review }: { review: Review }) {
       </div>
 
       <div className="review-content">
-        <MarkdownComment text={review.comment} />
+        <MarkdownComment text={review.comment} keyword={keyword} />
 
         {review.file_path && (
           <div className="file-path">
@@ -149,9 +162,9 @@ function ReviewCard({ review }: { review: Review }) {
   );
 }
 
-/* -------------------------------- */
+/* -------------------------------------------------------------- */
 /* 서브 컴포넌트 */
-/* -------------------------------- */
+/* -------------------------------------------------------------- */
 function ReviewerInfo({ review }: { review: Review }) {
   return (
     <div className="reviewer-info">
@@ -181,19 +194,40 @@ function RepoBadge({ repo }: { repo: string }) {
   );
 }
 
-function MarkdownComment({ text }: { text: string }) {
+/* -------------------------------------------------------------- */
+/* Markdown Comment (Keyword Highlight) */
+/* -------------------------------------------------------------- */
+function MarkdownComment({
+  text,
+  keyword,
+}: {
+  text: string;
+  keyword?: string;
+}) {
+  let content = text ?? "";
+
+  if (keyword) {
+    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`(${escaped})`, "gi");
+
+    content = content.replace(
+      regex,
+      `<mark class="keyword-highlight">$1</mark>`
+    );
+  }
+
   return (
     <div className="review-comment">
       <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-        {text?.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n") ?? ""}
+        {content.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n")}
       </ReactMarkdown>
     </div>
   );
 }
 
-/* -------------------------------- */
-/* ⭐ 최종 GitHub Diff 스타일 DiffCodeBlock */
-/* -------------------------------- */
+/* -------------------------------------------------------------- */
+/* GitHub Diff 스타일 구현 */
+/* -------------------------------------------------------------- */
 function DiffCodeBlock({ code }: { code: string }) {
   const lines = code.replace(/\\n/g, "\n").split("\n");
 
