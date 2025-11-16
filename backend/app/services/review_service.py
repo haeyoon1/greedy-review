@@ -23,16 +23,21 @@ TARGET_KEYWORDS = [
     "패키지 구조", "import", "와일드카드", "srp"
 ]
 
+MIN_COUNT = 2   # 너무 빡세지 않게 2번 이상만 남기도록
 
 class ReviewService:
     def __init__(self):
         self.reviews = [Review(**r) for r in load_reviews()]
 
-    def get_keyword_stats(self):
-        matches = []
+    def get_keyword_stats(self, repo: str | None = None):
+        matches: list[str] = []
 
         for r in self.reviews:
-            text = r.comment.lower()
+            # ✅ repo 필터: 완전 일치 말고 "부분 포함"으로
+            if repo and repo not in r.repo:
+                continue
+
+            text = (r.comment or "").lower()
 
             for keyword in TARGET_KEYWORDS:
                 if keyword.lower() in text:
@@ -40,21 +45,26 @@ class ReviewService:
 
         counter = Counter(matches)
 
-        # 🔥 count >= 4 인 키워드만 반환
-        filtered = {k: v for k, v in counter.items() if v >= 4}
+        # ✅ 최소 등장 횟수 필터
+        filtered = {k: v for k, v in counter.items() if v >= MIN_COUNT}
 
-        # 🔥 기존처럼 상위 50개만
-        sorted_filtered = dict(sorted(filtered.items(), key=lambda x: x[1], reverse=True)[:10])
+        # ✅ 상위 10개만
+        sorted_filtered = dict(
+            sorted(filtered.items(), key=lambda x: x[1], reverse=True)[:15]
+        )
 
         return sorted_filtered
 
-    
-    def get_reviews_by_keyword(self, keyword: str):
+    def get_reviews_by_keyword(self, keyword: str, repo: str | None = None):
         keyword = keyword.lower()
-        result = []
+        result: list[Review] = []
 
         for r in self.reviews:
-            if keyword in r.comment.lower():
+            # 동일하게 repo 부분 포함으로 필터
+            if repo and repo not in r.repo:
+                continue
+
+            if keyword in (r.comment or "").lower():
                 result.append(r)
 
         return result

@@ -1,13 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from app.services.review_service import ReviewService
 
 router = APIRouter(prefix="/stats")
+
 service = ReviewService()
 
 @router.get("/keywords")
-def get_keyword_stats():
-    return service.get_keyword_stats()
+def keyword_stats(repo: str | None = Query(None)):
+    return service.get_keyword_stats(repo)
+
 
 @router.get("/keyword/{keyword}")
-def get_reviews_by_keyword(keyword: str):
-    return service.search_by_keyword(keyword)
+def keyword_reviews(keyword: str, repo: str | None = Query(None)):
+    return service.get_reviews_by_keyword(keyword, repo)

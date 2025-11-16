@@ -49,11 +49,15 @@ export default function Home() {
     setLoading(true);
     fetchKeywordStats(selectedRepo)
       .then((stats) => {
-        console.log(`📊 ${selectedRepo} stats:`, stats);
-        const formatted = Object.entries(stats).map(([k, v]) => ({
+        const safeStats = stats ?? {}; // ⬅ undefined/null 방지
+
+        console.log(`📊 ${selectedRepo} stats:`, safeStats);
+
+        const formatted = Object.entries(safeStats).map(([k, v]) => ({
           text: k,
-          value: v,
+          value: v as number,
         }));
+
         setWords(formatted);
       })
       .finally(() => {
@@ -71,7 +75,8 @@ export default function Home() {
         <div className="home-hero">
           <h2 className="home-subtitle">코드 리뷰 키워드 분석</h2>
           <p className="home-description">
-            넥스트 스텝 Java 미션 코드 리뷰에서 자주 언급되는 키워드를 시각화합니다.
+            넥스트 스텝 Java 미션 코드 리뷰에서 자주 언급되는 키워드를
+            시각화합니다.
             <br />
             미션을 선택하고 키워드를 클릭하면 관련 리뷰를 확인할 수 있습니다.
           </p>
