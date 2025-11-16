@@ -1,9 +1,73 @@
+/* ===========================================
+   GitHub 스타일 Diff Code Block
+   =========================================== */
+
+.github-code {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 12px;
+  border: 1px solid #e1e4e8;
+}
+
+/* SyntaxHighlighter 기본 margin 제거 */
+pre {
+  margin: 0 !important;
+}
+
+/* 코드 폰트 */
+pre code {
+  font-size: 14px;
+  line-height: 1.6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  white-space: pre-wrap;
+}
+
+/* GitHub diff 라인 구조 */
+pre .line {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+}
+
+/* + 추가된 라인 */
+pre .line.inserted {
+  background: #e6ffec !important;
+  color: #1a7f37 !important;
+}
+
+/* - 삭제된 라인 */
+pre .line.deleted {
+  background: #ffebe9 !important;
+  color: #cf222e !important;
+}
+
+/* @@ 헤더 */
+pre .line.meta {
+  background: #f6f8fa !important;
+  font-weight: bold;
+  color: #6e7781 !important;
+  padding: 4px 8px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+/* GitHub 스타일 문자열/연산자 색상 */
+.token.operator {
+  color: #cf222e !important;
+}
+
+.token.string {
+  color: #0a3069 !important;
+}
+
+/* ================================
+     DETAIL PAGE 기본 레이아웃
+     ================================ */
+
 .detail-page {
   min-height: 100vh;
   background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-secondary) 100%);
 }
 
-/* Detail Header */
 .detail-header {
   display: flex;
   justify-content: space-between;
@@ -42,7 +106,10 @@
   font-size: 1.25rem;
 }
 
-/* Loading State */
+/* ================================
+     Loading
+     ================================ */
+
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -73,7 +140,10 @@
   font-size: 1rem;
 }
 
-/* Empty State */
+/* ================================
+     Empty State
+     ================================ */
+
 .empty-reviews {
   text-align: center;
   padding: var(--spacing-2xl);
@@ -95,7 +165,10 @@
   color: var(--color-text-secondary);
 }
 
-/* Reviews List */
+/* ================================
+     Reviews List & Card
+     ================================ */
+
 .reviews-list {
   display: flex;
   flex-direction: column;
@@ -103,7 +176,6 @@
   margin-bottom: var(--spacing-2xl);
 }
 
-/* Review Card */
 .review-card {
   transition: all var(--transition-base);
 }
@@ -173,20 +245,44 @@
   font-weight: 600;
 }
 
-/* Review Content */
 .review-content {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
 }
 
+/* ================================
+     Markdown 텍스트
+     ================================ */
+
 .review-comment {
   font-size: 1rem;
   line-height: 1.7;
   color: var(--color-text);
-  white-space: pre-line;
   word-wrap: break-word;
 }
+
+/* 리스트 들여쓰기 정상화 */
+.review-comment ul,
+.review-comment ol {
+  padding-left: 1.5rem;
+  margin-left: 0;
+}
+
+.review-comment li {
+  margin-bottom: 4px;
+  line-height: 1.6;
+}
+
+.review-comment ul {
+  list-style-type: disc;
+}
+
+.review-comment ol {
+  list-style-type: decimal;
+}
+
+/* 코드 하이라이트 안의 Markdown은 그대로 유지 */
 
 .file-path {
   display: inline-flex;
@@ -201,24 +297,6 @@
   align-self: flex-start;
 }
 
-.code-snippet {
-  background-color: var(--color-black);
-  color: #e5e7eb;
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  overflow-x: auto;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-}
-
-.code-snippet code {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  white-space: pre;
-}
-
-/* Review Footer */
 .review-footer {
   margin-top: var(--spacing-md);
   padding-top: var(--spacing-md);
@@ -227,7 +305,10 @@
   gap: var(--spacing-sm);
 }
 
-/* Responsive */
+/* ================================
+     Mobile
+     ================================ */
+
 @media (max-width: 768px) {
   .detail-header {
     flex-direction: column;
@@ -249,7 +330,7 @@
     padding: var(--spacing-md);
   }
 
-  .code-snippet {
-    font-size: 0.75rem;
+  .github-code pre code {
+    font-size: 12px;
   }
 }
