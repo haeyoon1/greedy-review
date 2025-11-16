@@ -22,10 +22,13 @@ interface Review {
   submitted_at: string;
 }
 
+const ITEMS_PER_PAGE = 5;
+
 export default function Detail() {
   const { name } = useParams();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (!name) return;
@@ -34,11 +37,18 @@ export default function Detail() {
     fetchReviewsByKeyword(name)
       .then((data) => {
         setReviews(data);
+        setCurrentPage(1); // 리셋
       })
       .finally(() => {
         setLoading(false);
       });
   }, [name]);
+
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(reviews.length / ITEMS_PER_PAGE);
+  const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIdx = startIdx + ITEMS_PER_PAGE;
+  const currentReviews = reviews.slice(startIdx, endIdx);
 
   if (loading) {
     return (
@@ -86,18 +96,29 @@ export default function Detail() {
             <p className="text-secondary">다른 키워드를 검색해보세요.</p>
           </Card>
         ) : (
-          <div className="reviews-list">
-            {reviews.map((review, idx) => (
-              <Card
-                key={idx}
-                variant="default"
-                padding="lg"
-                className="review-card"
-              >
-                <ReviewCard review={review} keyword={name} />
-              </Card>
-            ))}
-          </div>
+          <>
+            <div className="reviews-list">
+              {currentReviews.map((review, idx) => (
+                <Card
+                  key={idx}
+                  variant="default"
+                  padding="lg"
+                  className="review-card"
+                >
+                  <ReviewCard review={review} keyword={name} />
+                </Card>
+              ))}
+            </div>
+
+            {/* 페이지네이션 */}
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            )}
+          </>
         )}
       </Container>
     </div>
@@ -107,19 +128,6 @@ export default function Detail() {
 /* -------------------------------------------------------------- */
 /* 리뷰 카드 */
 /* -------------------------------------------------------------- */
-function groupByCodeSnippet(reviews: Review[]) {
-  const groups: Record<string, Review[]> = {};
-
-  for (const r of reviews) {
-    const key = (r.code_snippet || "").trim();
-
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(r);
-  }
-
-  return groups;
-}
-
 function ReviewCard({ review, keyword }: { review: Review; keyword?: string }) {
   return (
     <>
@@ -129,8 +137,7 @@ function ReviewCard({ review, keyword }: { review: Review; keyword?: string }) {
       </div>
 
       <div className="review-content">
-        <MarkdownComment text={review.comment} keyword={keyword} />
-
+        {/* 1️⃣ 코드 스니펫을 먼저 표시 */}
         {review.file_path && (
           <div className="file-path">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
@@ -141,6 +148,9 @@ function ReviewCard({ review, keyword }: { review: Review; keyword?: string }) {
         )}
 
         {review.code_snippet && <DiffCodeBlock code={review.code_snippet} />}
+
+        {/* 2️⃣ 코멘트를 나중에 표시 */}
+        <MarkdownComment text={review.comment} keyword={keyword} />
       </div>
 
       {review.url && (
@@ -275,5 +285,81 @@ function DiffCodeBlock({ code }: { code: string }) {
         );
       })}
     </pre>
+  );
+}
+
+/* -------------------------------------------------------------- */
+/* Pagination */
+/* -------------------------------------------------------------- */
+function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}) {
+  const pages: (number | string)[] = [];
+
+  // 페이지 번호 계산
+  if (totalPages <= 7) {
+    // 7페이지 이하면 모두 표시
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+  } else {
+    // 7페이지 초과시 ... 포함
+    if (currentPage <= 3) {
+      pages.push(1, 2, 3, 4, "...", totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+    }
+  }
+
+  return (
+    <div className="pagination">
+      <button
+        className="pagination-arrow"
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        aria-label="이전 페이지"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+        </svg>
+      </button>
+
+      <div className="pagination-numbers">
+        {pages.map((page, idx) =>
+          page === "..." ? (
+            <span key={`ellipsis-${idx}`} className="pagination-ellipsis">
+              ...
+            </span>
+          ) : (
+            <button
+              key={page}
+              className={`pagination-number ${currentPage === page ? "active" : ""}`}
+              onClick={() => onPageChange(page as number)}
+            >
+              {page}
+            </button>
+          )
+        )}
+      </div>
+
+      <button
+        className="pagination-arrow"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        aria-label="다음 페이지"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+        </svg>
+      </button>
+    </div>
   );
 }

@@ -23,8 +23,120 @@
   font-size: 1.125rem;
   color: var(--color-text-secondary);
   line-height: 1.8;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
+}
+
+/* ================================
+   Repository Tabs
+   ================================ */
+
+.repo-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.repo-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background-color: var(--color-white);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-align: left;
+}
+
+.repo-tab:hover {
+  border-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.repo-tab.active {
+  border-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary-pale) 0%, var(--color-white) 100%);
+  box-shadow: var(--shadow-lg);
+}
+
+.repo-emoji {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.repo-info {
+  flex: 1;
+}
+
+.repo-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.repo-description {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ================================
+   Current Repository Card
+   ================================ */
+
+.current-repo-card {
+  margin-bottom: var(--spacing-xl);
+  background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-primary-pale) 100%);
+  border: 2px solid var(--color-primary);
+}
+
+.current-repo-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.current-repo-emoji {
+  font-size: 3rem;
+}
+
+.current-repo-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.current-repo-desc {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.github-link:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .word-cloud-card {
@@ -129,6 +241,30 @@
 
   .home-description {
     font-size: 1rem;
+  }
+
+  .repo-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .repo-emoji {
+    font-size: 2rem;
+  }
+
+  .repo-name {
+    font-size: 1rem;
+  }
+
+  .repo-description {
+    font-size: 0.8125rem;
+  }
+
+  .current-repo-emoji {
+    font-size: 2.5rem;
+  }
+
+  .current-repo-name {
+    font-size: 1.25rem;
   }
 
   .stats-grid {

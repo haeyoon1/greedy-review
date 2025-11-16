@@ -44,7 +44,7 @@ class ReviewService:
         filtered = {k: v for k, v in counter.items() if v >= 4}
 
         # 🔥 기존처럼 상위 50개만
-        sorted_filtered = dict(sorted(filtered.items(), key=lambda x: x[1], reverse=True)[:30])
+        sorted_filtered = dict(sorted(filtered.items(), key=lambda x: x[1], reverse=True)[:10])
 
         return sorted_filtered
 
