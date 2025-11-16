@@ -2,6 +2,7 @@ import re
 from collections import Counter
 from app.models.review_model import Review
 from app.utils.loader import load_reviews
+from app.utils.loader import load_all_reviews
 
 TARGET_KEYWORDS = [
     "객체지향", "캡슐화", "상속", "다형성", "추상화", "인터페이스", "구현체", "의존성", "의존성 주입", 
@@ -27,7 +28,7 @@ MIN_COUNT = 2   # 너무 빡세지 않게 2번 이상만 남기도록
 
 class ReviewService:
     def __init__(self):
-        self.reviews = [Review(**r) for r in load_reviews()]
+        self.reviews = [Review(**r) for r in load_all_reviews()]
 
     def get_keyword_stats(self, repo: str | None = None):
         matches: list[str] = []
