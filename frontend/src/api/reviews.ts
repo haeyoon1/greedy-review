@@ -4,27 +4,32 @@ import { supabase } from "../lib/supabase";
 export async function fetchReviews() {
   const { data, error } = await supabase
     .from("reviews")
-    .select("*");
+    .select("id, repo, pr_number, comment, reviewer, file_path, code_snippet, url, submitted_at");
 
-  if (error) throw error;
+  if (error) {
+    console.error("❌ fetchReviews 오류:", error);
+    return [];
+  }
   return data;
 }
 
-// 특정 키워드가 포함된 리뷰 가져오기
+// 특정 키워드 리뷰 가져오기
 export async function fetchReviewsByKeyword(keyword: string) {
   const { data, error } = await supabase
     .from("reviews")
-    .select("*")
+    .select("id, repo, pr_number, comment, reviewer, file_path, code_snippet, url, submitted_at")
     .ilike("comment", `%${keyword}%`);
 
-  if (error) throw error;
+  if (error) {
+    console.error("❌ fetchReviewsByKeyword 오류:", error);
+    return [];
+  }
   return data;
 }
 
-// WordCloud에 쓸 키워드 빈도 계산
+// 키워드 통계
 export async function fetchKeywordStats() {
   const reviews = await fetchReviews();
-
   const counts: Record<string, number> = {};
 
   const JAVA_KEYWORDS = [
@@ -43,9 +48,9 @@ export async function fetchKeywordStats() {
 
   for (const r of reviews) {
     const text = r.comment?.toLowerCase() ?? "";
-    JAVA_KEYWORDS.forEach(keyword => {
-      if (text.includes(keyword.toLowerCase())) {
-        counts[keyword] = (counts[keyword] || 0) + 1;
+    JAVA_KEYWORDS.forEach((k) => {
+      if (text.includes(k.toLowerCase())) {
+        counts[k] = (counts[k] || 0) + 1;
       }
     });
   }
