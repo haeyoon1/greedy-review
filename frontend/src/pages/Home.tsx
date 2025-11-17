@@ -39,6 +39,121 @@ const REPOSITORIES: {
   },
 ];
 
+// ✅ 키워드 카테고리 정의
+const KEYWORD_CATEGORIES = {
+  oop: {
+    name: "객체지향 및 설계 원칙",
+    emoji: "🎯",
+    keywords: [
+      "객체지향",
+      "캡슐화",
+      "상속",
+      "다형성",
+      "추상화",
+      "인터페이스",
+      "구현체",
+      "의존성",
+      "의존 역전 원칙",
+      "개방 폐쇄 원칙",
+      "단일 책임 원칙",
+      "단일 책임",
+      "srp",
+      "책임",
+      "SOLID",
+      "응집도",
+      "결합도",
+      "불변",
+      "상태 관리",
+    ],
+  },
+  architecture: {
+    name: "아키텍처 및 디자인 패턴",
+    emoji: "🏗️",
+    keywords: [
+      "MVC",
+      "레이어드 아키텍처",
+      "패키지 구조",
+      "와일드카드",
+      "팩토리 패턴",
+      "전략 패턴",
+      "싱글톤 패턴",
+      "빌더 패턴",
+      "정적 팩토리 메서드",
+      "정팩메",
+      "래퍼클래스",
+      "Wrapper Class",
+      "Wrapper",
+    ],
+  },
+  codeQuality: {
+    name: "코드 품질 및 Java 기본",
+    emoji: "✨",
+    keywords: [
+      "리팩터링",
+      "리팩토링",
+      "중복",
+      "가독성",
+      "네이밍",
+      "일급 컬렉션",
+      "원시값 포장",
+      "상수화",
+      "매직 넘버",
+      "상수",
+      "유틸",
+      "enum",
+      "static",
+      "final",
+      "함수형 인터페이스",
+      "람다",
+      "lambda",
+      "Stream",
+      "스트림",
+      "Optional",
+      "Null",
+      "컬렉션",
+      "collection",
+      "List",
+      "Map",
+      "Set",
+      "ArrayList",
+      "HashMap",
+      "HashSet",
+      "equals",
+      "hashCode",
+      "Comparable",
+      "Comparator",
+      "StringBuilder",
+      "제네릭",
+      "generic",
+      "예외 처리",
+      "예외",
+      "Checked Exception",
+      "Unchecked Exception",
+    ],
+  },
+  testing: {
+    name: "테스트",
+    emoji: "🧪",
+    keywords: [
+      "단위 테스트",
+      "통합 테스트",
+      "JUnit",
+      "AssertJ",
+      "커버리지",
+      "given-when-then",
+      "Mock 객체",
+      "BeforeEach",
+      "AfterEach",
+      "ParameterizedTest",
+      "테스트 더블",
+      "인수 테스트",
+      "fixture",
+      "픽스쳐",
+      "test",
+    ],
+  },
+};
+
 export default function Home() {
   const [selectedRepo, setSelectedRepo] = useState<Repository>("java-lotto");
   const [words, setWords] = useState<{ text: string; value: number }[]>([]);
@@ -47,10 +162,10 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
+
     fetchKeywordStats(selectedRepo)
       .then((stats) => {
-        const safeStats = stats ?? {}; // ⬅ undefined/null 방지
-
+        const safeStats = stats ?? {};
         console.log(`📊 ${selectedRepo} stats:`, safeStats);
 
         const formatted = Object.entries(safeStats).map(([k, v]) => ({
@@ -58,7 +173,10 @@ export default function Home() {
           value: v as number,
         }));
 
-        setWords(formatted);
+        // 🔥 여기서 5회 이상만 필터링
+        const filtered = formatted.filter((item) => item.value >= 5);
+
+        setWords(filtered);
       })
       .finally(() => {
         setLoading(false);
@@ -66,6 +184,39 @@ export default function Home() {
   }, [selectedRepo]);
 
   const currentRepo = REPOSITORIES.find((r) => r.id === selectedRepo)!;
+
+  // 문자열을 정규화 (대소문자, 띄어쓰기 무시)
+  const normalizeString = (str: string) => {
+    return str.toLowerCase().replace(/\s+/g, "");
+  };
+
+  // 카테고리별 Top 키워드 계산
+  const getCategoryTopKeyword = (
+    categoryKey: keyof typeof KEYWORD_CATEGORIES
+  ) => {
+    const category = KEYWORD_CATEGORIES[categoryKey];
+    const categoryWords = words.filter((w) => {
+      const wordNormalized = normalizeString(w.text);
+      return category.keywords.some((kw) => {
+        const kwNormalized = normalizeString(kw);
+        // 정규화된 단어로 비교: 정확한 매칭 또는 포함 관계 체크
+        return (
+          wordNormalized === kwNormalized ||
+          wordNormalized.includes(kwNormalized) ||
+          kwNormalized.includes(wordNormalized)
+        );
+      });
+    });
+
+    if (categoryWords.length === 0) return null;
+
+    // 가장 높은 빈도의 키워드 찾기
+    const topWord = categoryWords.reduce((max, word) =>
+      word.value > max.value ? word : max
+    );
+
+    return topWord;
+  };
 
   return (
     <div className="home-page">
@@ -142,29 +293,48 @@ export default function Home() {
           )}
         </Card>
 
-        {/* 통계 카드 */}
-        <div className="stats-grid">
-          <Card variant="outlined" padding="md" className="stat-card">
-            <div className="stat-icon">📊</div>
-            <div className="stat-value">{words.length}</div>
-            <div className="stat-label">총 키워드 수</div>
-          </Card>
+        {/* 카테고리별 Top 키워드 */}
+        <div className="category-stats">
+          <h3 className="category-stats-title">카테고리별 주요 키워드</h3>
+          <div className="category-grid">
+            {Object.entries(KEYWORD_CATEGORIES).map(([key, category]) => {
+              const topKeyword = getCategoryTopKeyword(
+                key as keyof typeof KEYWORD_CATEGORIES
+              );
 
-          <Card variant="outlined" padding="md" className="stat-card">
-            <div className="stat-icon">🔥</div>
-            <div className="stat-value">
-              {words.length > 0 ? Math.max(...words.map((w) => w.value)) : 0}
-            </div>
-            <div className="stat-label">최다 언급</div>
-          </Card>
+              return (
+                <Card
+                  key={key}
+                  variant="outlined"
+                  padding="md"
+                  className="category-card"
+                  onClick={
+                    topKeyword
+                      ? () => navigate(`/keyword/${topKeyword.text}`)
+                      : undefined
+                  }
+                >
+                  <div className="category-header">
+                    <span className="category-emoji">{category.emoji}</span>
+                    <div className="category-name">{category.name}</div>
+                  </div>
 
-          <Card variant="outlined" padding="md" className="stat-card">
-            <div className="stat-icon">💬</div>
-            <div className="stat-value">
-              {words.reduce((sum, w) => sum + w.value, 0)}
-            </div>
-            <div className="stat-label">전체 언급 횟수</div>
-          </Card>
+                  {topKeyword ? (
+                    <div className="category-top-keyword">
+                      <div className="top-keyword-text">{topKeyword.text}</div>
+                      <div className="top-keyword-count">
+                        {topKeyword.value}회 언급
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="category-no-data">
+                      <span className="no-data-text">데이터 없음</span>
+                    </div>
+                  )}
+                </Card>
+              );
+            })}
+          </div>
         </div>
       </Container>
     </div>

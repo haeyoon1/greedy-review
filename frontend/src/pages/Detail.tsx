@@ -216,6 +216,16 @@ function MarkdownComment({
 }) {
   let content = text ?? "";
 
+  // 마크다운 링크 패턴 감지 및 변환
+  // [텍스트](URL) 형식이 없으면, URL 패턴을 찾아 마크다운으로 변환
+  const urlPattern = /(?<!\[)(?<!\()https?:\/\/[^\s\)]+/g;
+  if (!content.includes("[") || !content.includes("](")) {
+    content = content.replace(
+      urlPattern,
+      (url) => `[${url}](${url})`
+    );
+  }
+
   if (keyword) {
     const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const regex = new RegExp(`(${escaped})`, "gi");

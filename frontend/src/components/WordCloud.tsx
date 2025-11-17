@@ -51,21 +51,28 @@ export default function WordCloud({ words, onWordClick }: Props) {
 
     const { width, height } = dimensions;
 
+    // 빈도 범위 계산
+    const values = words.map((w) => w.value);
+    const maxValue = Math.max(...values);
+    // minValue를 1로 고정하여 작은 값도 충분한 크기를 가짐
+    const minValue = 1;
+
     const layout = cloud()
       .size([width, height])
       .words(
-        words.map((d) => ({
-          text: d.text,
-          size: Math.max(14, Math.min(60, 16 + d.value * 2.5)),
-        }))
+        words.map((d) => {
+          // 빈도에 따라 크기를 더 극적으로 차이나게 (14px ~ 90px)
+          const normalizedValue = (d.value - minValue) / (maxValue - minValue || 1);
+          const size = 14 + normalizedValue * 76; // 14px ~ 90px
+
+          return {
+            text: d.text,
+            size: Math.round(size),
+          };
+        })
       )
-      .padding(8)
-      .rotate(() => {
-        const rand = Math.random();
-        if (rand > 0.7) return 90;
-        if (rand > 0.5) return -90;
-        return 0;
-      })
+      .padding(10)
+      .rotate(() => 0) // ✅ 모든 텍스트 가로로만!
       .font("Pretendard, -apple-system, sans-serif")
       .fontSize((d: any) => d.size as number)
       .on("end", draw);

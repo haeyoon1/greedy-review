@@ -54,7 +54,7 @@ TARGET_KEYWORDS = {
     "트랜잭션": ["트랜잭션"],
 
     # --- 코드 품질/리팩터링 ---
-    "리팩터링": ["리팩터링", "리팩토링"],
+    "리팩토링": ["리팩터링", "리팩토링"],
     "중복 제거": ["중복"],
     "가독성": ["가독성"],
     "네이밍": ["네이밍"],
@@ -72,6 +72,8 @@ TARGET_KEYWORDS = {
     "Stream": ["Stream", "스트림"],
     "Optional": ["Optional"],
     "Null": ["Null"],
+    "정적 팩토리 메서드": ["정적 팩토리 메서드", "정팩메"],
+    "래퍼 클래스": ["래퍼클래스", "Wrapper Class", "Wrapper"],
 
     # --- 예외 처리 ---
     "예외 처리": ["예외 처리", "예외"],
@@ -86,7 +88,7 @@ TARGET_KEYWORDS = {
     "AssertJ": ["AssertJ"],
     "커버리지": ["커버리지"],
     "given-when-then": ["given-when-then"],
-    "Mock 객체": ["Mock 객체"],
+    "Mock 객체": ["Mock"],
     "BeforeEach": ["BeforeEach"],
     "AfterEach": ["AfterEach"],
     "ParameterizedTest": ["ParameterizedTest"],
@@ -116,9 +118,6 @@ TARGET_KEYWORDS = {
     "Scanner": ["Scanner"],
     "eof": ["eof"],
 
-    # --- ★ 중요한 묶음: 래퍼/정적 팩토리 메서드 ---
-    "정적 팩토리 메서드": ["정적 팩토리 메서드", "정팩메"],
-    "래퍼 클래스": ["래퍼클래스", "Wrapper Class", "Wrapper"],
 }
 
 
@@ -128,7 +127,7 @@ NORMALIZED_KEYWORDS = {
     for main_key, synonyms in TARGET_KEYWORDS.items()
 }
 
-MIN_COUNT = 4
+MIN_COUNT = 2
 
 
 # ==========================================================
