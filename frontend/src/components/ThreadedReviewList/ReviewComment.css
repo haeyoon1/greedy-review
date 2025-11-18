@@ -1,0 +1,316 @@
+/* ═══════════════════════════════════════════════════
+   ReviewComment 스타일
+   ═══════════════════════════════════════════════════ */
+
+.review-comment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* 메인 댓글과 답글의 시각적 차이 */
+.review-comment.main {
+  background-color: var(--color-white);
+}
+
+.review-comment.reply {
+  background-color: var(--color-bg-subtle);
+  padding: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   댓글 헤더 (작성자 정보)
+   ═══════════════════════════════════════════════════ */
+
+.comment-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.author-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.author-name {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.comment-date {
+  font-size: 0.8rem;
+  color: var(--color-text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════
+   배지 (리포, 파일명)
+   ═══════════════════════════════════════════════════ */
+
+.comment-badges {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.repo-badge,
+.file-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.repo-badge {
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary-light);
+}
+
+.file-badge {
+  background-color: var(--color-orange-pale);
+  color: var(--color-orange-dark);
+  border: 1px solid var(--color-orange-light);
+}
+
+/* ═══════════════════════════════════════════════════
+   코드 스니펫
+   ═══════════════════════════════════════════════════ */
+
+.code-snippet {
+  margin: var(--spacing-md) 0;
+}
+
+.diff-code-block {
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  /* 스크롤바 스타일 */
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f3f5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+
+    &:hover {
+      background: #a0aec0;
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   댓글 콘텐츠 (마크다운)
+   ═══════════════════════════════════════════════════ */
+
+.comment-content {
+  line-height: 1.6;
+  color: var(--color-text);
+  word-break: break-word;
+}
+
+/* 마크다운 스타일 */
+.comment-content p {
+  margin: var(--spacing-sm) 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.comment-content h1,
+.comment-content h2,
+.comment-content h3,
+.comment-content h4,
+.comment-content h5,
+.comment-content h6 {
+  margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.comment-content h1 {
+  font-size: 1.5rem;
+}
+
+.comment-content h2 {
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-sm);
+}
+
+.comment-content h3 {
+  font-size: 1.1rem;
+}
+
+.comment-content ul,
+.comment-content ol {
+  margin: var(--spacing-md) 0;
+  padding-left: var(--spacing-lg);
+}
+
+.comment-content li {
+  margin: var(--spacing-xs) 0;
+}
+
+.comment-content blockquote {
+  margin: var(--spacing-md) 0;
+  padding-left: var(--spacing-md);
+  border-left: 3px solid var(--color-primary);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.comment-content code {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.9em;
+  color: var(--color-orange-dark);
+}
+
+.comment-content pre {
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  margin: var(--spacing-md) 0;
+
+  code {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    color: #24292e;
+  }
+}
+
+/* 마크다운 링크 */
+.markdown-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--color-primary-light);
+  transition: all var(--transition-fast);
+
+  &:hover {
+    color: var(--color-primary-dark);
+    border-bottom-style: solid;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+/* 키워드 하이라이트 */
+mark.keyword-highlight {
+  background-color: #fff59d;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════
+   댓글 푸터 (PR 링크)
+   ═══════════════════════════════════════════════════ */
+
+.comment-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* ═══════════════════════════════════════════════════
+   반응형
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .comment-header {
+    flex-direction: column;
+  }
+
+  .comment-badges {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .repo-badge,
+  .file-badge {
+    max-width: 120px;
+  }
+
+  .author-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .author-name {
+    font-size: 0.9rem;
+  }
+
+  .comment-date {
+    font-size: 0.75rem;
+  }
+
+  .comment-content {
+    font-size: 0.95rem;
+  }
+
+  .diff-code-block {
+    font-size: 0.75rem;
+    padding: var(--spacing-sm);
+  }
+}

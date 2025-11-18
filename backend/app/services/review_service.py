@@ -189,3 +189,36 @@ class ReviewService:
                 result.append(r)
 
         return result
+
+    def search_by_keyword(self, keyword: str, repo: str | None = None):
+        keyword = normalize(keyword)
+
+        # 1) keyword가 속한 synonym 그룹 찾기
+        synonyms = None
+        for main_key, syn_list in NORMALIZED_KEYWORDS.items():
+            if keyword == normalize(main_key) or keyword in syn_list:
+                synonyms = syn_list
+                break
+        if synonyms is None:
+            synonyms = [keyword]
+
+        # 2) keyword가 포함된 리뷰만 먼저 필터링
+        matched = [
+            r for r in self.reviews
+            if (repo is None or repo in r.repo)
+            and any(syn in normalize(r.comment) for syn in synonyms)
+        ]
+
+        if not matched:
+            return []
+
+        # 3) matched 리뷰들의 thread_id 추출
+        thread_ids = {r.thread_id for r in matched}
+
+        # 4) thread 전체 확장 반환
+        full_threads = [
+            r for r in self.reviews
+            if r.thread_id in thread_ids
+        ]
+
+        return full_threads

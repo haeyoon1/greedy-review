@@ -39,4 +39,3 @@ export async function fetchKeywordStats(repo?: string) {
   
     return await res.json();
   }  
-  

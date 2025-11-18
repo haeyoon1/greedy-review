@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════════
+   ThreadPagination 스타일
+   ═══════════════════════════════════════════════════ */
+
+.thread-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) 0;
+  flex-wrap: wrap;
+}
+
+/* ═══════════════════════════════════════════════════
+   페이지네이션 버튼 (이전/다음)
+   ═══════════════════════════════════════════════════ */
+
+.pagination-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-pale);
+    color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   페이지 번호
+   ═══════════════════════════════════════════════════ */
+
+.page-numbers {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.page-button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-pale);
+    color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &.active {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 700;
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active:not(.active) {
+    transform: scale(0.98);
+  }
+}
+
+.ellipsis {
+  padding: 0 var(--spacing-xs);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════
+   페이지 정보
+   ═══════════════════════════════════════════════════ */
+
+.page-info {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  padding: 0 var(--spacing-md);
+  border-left: 1px solid var(--color-border);
+}
+
+/* ═══════════════════════════════════════════════════
+   반응형
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .thread-pagination {
+    gap: var(--spacing-sm);
+  }
+
+  .page-button {
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.875rem;
+    padding: 0 var(--spacing-xs);
+  }
+
+  .pagination-arrow {
+    width: 32px;
+    height: 32px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .page-info {
+    padding: 0 var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+
+  .ellipsis {
+    padding: 0 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .thread-pagination {
+    gap: var(--spacing-xs);
+  }
+
+  .page-numbers {
+    gap: 2px;
+  }
+
+  .page-button {
+    min-width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+    padding: 0 4px;
+  }
+
+  .pagination-arrow {
+    width: 28px;
+    height: 28px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .page-info {
+    display: none; /* 모바일에서는 숨김 */
+  }
+}

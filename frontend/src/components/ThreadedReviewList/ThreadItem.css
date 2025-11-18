@@ -1,0 +1,143 @@
+/* ═══════════════════════════════════════════════════
+   ThreadItem 스타일 (단일 스레드 컨테이너)
+   ═══════════════════════════════════════════════════ */
+
+.thread-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-white);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.thread-item:hover {
+  border-color: var(--color-primary-light);
+  box-shadow: var(--shadow-md);
+}
+
+/* ═══════════════════════════════════════════════════
+   메인 댓글
+   ═══════════════════════════════════════════════════ */
+
+.main-comment-wrapper {
+  padding: var(--spacing-lg);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+/* ═══════════════════════════════════════════════════
+   토글 버튼 ("댓글 X개 더 보기" / "접기")
+   ═══════════════════════════════════════════════════ */
+
+.reply-toggle {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--color-bg);
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: all var(--transition-fast);
+
+  /* 하버 효과 */
+  &:hover {
+    background-color: var(--color-primary-pale);
+    color: var(--color-primary-dark);
+  }
+
+  /* 활성 상태 (펼쳐짐) */
+  &.expanded {
+    background-color: var(--color-primary-pale);
+    border-bottom: none;
+  }
+
+  &.expanded:hover {
+    background-color: var(--color-primary-pale);
+    color: var(--color-primary-dark);
+  }
+}
+
+.toggle-icon {
+  font-size: 0.75rem;
+  transition: transform var(--transition-fast);
+  display: inline-block;
+}
+
+.reply-toggle.expanded .toggle-icon {
+  transform: rotate(0deg);
+}
+
+.reply-toggle:not(.expanded) .toggle-icon {
+  transform: rotate(-90deg);
+}
+
+.toggle-text {
+  flex: 1;
+  text-align: left;
+}
+
+/* ═══════════════════════════════════════════════════
+   답글 컨테이너
+   ═══════════════════════════════════════════════════ */
+
+.replies-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  animation: slideDown 200ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+.reply-wrapper {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border-light);
+  background-color: var(--color-white);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  /* 마진으로 답글 들여쓰기 효과 */
+  margin-left: var(--spacing-lg);
+}
+
+/* ═══════════════════════════════════════════════════
+   반응형
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .thread-item {
+    border-radius: var(--radius-md);
+  }
+
+  .main-comment-wrapper,
+  .reply-toggle {
+    padding: var(--spacing-md);
+  }
+
+  .reply-wrapper {
+    padding: var(--spacing-md);
+    margin-left: var(--spacing-md);
+  }
+
+  .reply-toggle {
+    font-size: 0.875rem;
+  }
+}

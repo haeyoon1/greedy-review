@@ -26,6 +26,8 @@ const ITEMS_PER_PAGE = 5;
 
 export default function Detail() {
   const { name } = useParams();
+  console.log(name);
+  let stringName = String(name);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -220,10 +222,7 @@ function MarkdownComment({
   // [텍스트](URL) 형식이 없으면, URL 패턴을 찾아 마크다운으로 변환
   const urlPattern = /(?<!\[)(?<!\()https?:\/\/[^\s\)]+/g;
   if (!content.includes("[") || !content.includes("](")) {
-    content = content.replace(
-      urlPattern,
-      (url) => `[${url}](${url})`
-    );
+    content = content.replace(urlPattern, (url) => `[${url}](${url})`);
   }
 
   if (keyword) {
@@ -323,9 +322,24 @@ function Pagination({
     if (currentPage <= 3) {
       pages.push(1, 2, 3, 4, "...", totalPages);
     } else if (currentPage >= totalPages - 2) {
-      pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      pages.push(
+        1,
+        "...",
+        totalPages - 3,
+        totalPages - 2,
+        totalPages - 1,
+        totalPages
+      );
     } else {
-      pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+      pages.push(
+        1,
+        "...",
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        "...",
+        totalPages
+      );
     }
   }
 
@@ -338,7 +352,11 @@ function Pagination({
         aria-label="이전 페이지"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+          <path
+            fillRule="evenodd"
+            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+            clipRule="evenodd"
+          />
         </svg>
       </button>
 
@@ -351,7 +369,9 @@ function Pagination({
           ) : (
             <button
               key={page}
-              className={`pagination-number ${currentPage === page ? "active" : ""}`}
+              className={`pagination-number ${
+                currentPage === page ? "active" : ""
+              }`}
               onClick={() => onPageChange(page as number)}
             >
               {page}
@@ -367,7 +387,11 @@ function Pagination({
         aria-label="다음 페이지"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+          <path
+            fillRule="evenodd"
+            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+            clipRule="evenodd"
+          />
         </svg>
       </button>
     </div>
