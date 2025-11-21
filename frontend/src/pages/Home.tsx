@@ -141,11 +141,10 @@ const KEYWORD_CATEGORIES = {
       "AssertJ",
       "커버리지",
       "given-when-then",
-      "Mock 객체",
+      "Mock",
       "BeforeEach",
       "AfterEach",
       "ParameterizedTest",
-      "테스트 더블",
       "인수 테스트",
       "fixture",
       "픽스쳐",
@@ -173,8 +172,8 @@ export default function Home() {
           value: v as number,
         }));
 
-        // 🔥 여기서 5회 이상만 필터링
-        const filtered = formatted.filter((item) => item.value >= 5);
+        // 🔥 여기서 4회 이상만 필터링
+        const filtered = formatted.filter((item) => item.value >= 4);
 
         setWords(filtered);
       })
@@ -185,28 +184,16 @@ export default function Home() {
 
   const currentRepo = REPOSITORIES.find((r) => r.id === selectedRepo)!;
 
-  // 문자열을 정규화 (대소문자, 띄어쓰기 무시)
-  const normalizeString = (str: string) => {
-    return str.toLowerCase().replace(/\s+/g, "");
-  };
-
   // 카테고리별 Top 키워드 계산
   const getCategoryTopKeyword = (
     categoryKey: keyof typeof KEYWORD_CATEGORIES
   ) => {
     const category = KEYWORD_CATEGORIES[categoryKey];
-    const categoryWords = words.filter((w) => {
-      const wordNormalized = normalizeString(w.text);
-      return category.keywords.some((kw) => {
-        const kwNormalized = normalizeString(kw);
-        // 정규화된 단어로 비교: 정확한 매칭 또는 포함 관계 체크
-        return (
-          wordNormalized === kwNormalized ||
-          wordNormalized.includes(kwNormalized) ||
-          kwNormalized.includes(wordNormalized)
-        );
-      });
-    });
+    const categoryWords = words.filter((w) =>
+      category.keywords.some((kw) =>
+        w.text.toLowerCase().includes(kw.toLowerCase())
+      )
+    );
 
     if (categoryWords.length === 0) return null;
 

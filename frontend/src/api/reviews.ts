@@ -14,18 +14,41 @@ export async function fetchReviews() {
 }
 
 // 특정 키워드 리뷰 가져오기
+/*
 export async function fetchReviewsByKeyword(keyword: string) {
   const { data, error } = await supabase
     .from("reviews")
     .select("id, repo, pr_number, comment, reviewer, file_path, code_snippet, url, submitted_at")
     .ilike("comment", `%${keyword}%`);
 
+    console.log(data);
   if (error) {
     console.error("❌ fetchReviewsByKeyword 오류:", error);
     return [];
   }
   return data;
 }
+*/
+export async function fetchReviewsByKeyword(keyword: string) {
+    const decodedKeyword = decodeURIComponent(keyword);
+  
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("id, repo, pr_number, comment, reviewer, file_path, code_snippet, url, submitted_at")
+      .ilike("comment", `%${decodedKeyword}%`);
+  
+    console.log("검색어:", decodedKeyword);
+    console.log("결과:", data);
+  
+    if (error) {
+      console.error("❌ fetchReviewsByKeyword 오류:", error);
+      return [];
+    }
+  
+    return data ?? [];
+  }
+  
+
 
 // 키워드 통계 (레포지토리별)
 export async function fetchKeywordStats(repo?: string) {
