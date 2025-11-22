@@ -33,10 +33,10 @@ export default function Detail() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    if (!name) return;
+    if (!stringName) return;
 
     setLoading(true);
-    fetchReviewsByKeyword(name)
+    fetchReviewsByKeyword(stringName)
       .then((data) => {
         setReviews(data);
         setCurrentPage(1); // 리셋
@@ -44,7 +44,7 @@ export default function Detail() {
       .finally(() => {
         setLoading(false);
       });
-  }, [name]);
+  }, [stringName]);
 
   // 페이지네이션 계산
   const totalPages = Math.ceil(reviews.length / ITEMS_PER_PAGE);
