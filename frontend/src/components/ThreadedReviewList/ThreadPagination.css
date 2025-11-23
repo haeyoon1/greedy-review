@@ -19,34 +19,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border: 1px solid var(--color-border);
   background-color: var(--color-white);
   border-radius: var(--radius-md);
   cursor: pointer;
-  color: var(--color-primary);
+  color: var(--color-text-tertiary);
   transition: all var(--transition-fast);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
-.pagination-arrow svg {
-  width: 20px;
-  height: 20px;
-  stroke: var(--color-primary);
-  color: var(--color-primary);
+.pagination-arrow span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary);
 }
 
 .pagination-arrow:hover:not(:disabled) {
-  border-color: var(--color-primary);
-  background-color: var(--color-white);
-  color: var(--color-primary-dark);
+  border-color: var(--color-primary-light);
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
-.pagination-arrow:hover:not(:disabled) svg {
-  stroke: var(--color-primary-dark);
-  color: var(--color-primary-dark);
+.pagination-arrow:hover:not(:disabled) span {
+  color: var(--color-primary);
 }
 
 .pagination-arrow:disabled {

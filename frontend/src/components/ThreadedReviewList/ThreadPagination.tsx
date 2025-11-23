@@ -67,9 +67,7 @@ export default function ThreadPagination({
         disabled={currentPage === 1}
         aria-label="이전 페이지"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
+        <span>❮</span>
       </button>
 
       {/* 페이지 번호 */}
@@ -99,9 +97,7 @@ export default function ThreadPagination({
         disabled={currentPage === totalPages}
         aria-label="다음 페이지"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        <span>❯</span>
       </button>
 
       {/* 페이지 정보 */}

@@ -18,7 +18,7 @@ export const REPOSITORIES: Repository[] = [
     name: "자동차 경주 미션",
     emoji: "🚘",
     description: "객체 지향 설계와 MVC 구조의 핵심 개념을 다루는 자바 입문 미션입니다.",
-    shortTags: ["#객체지향", "#MVC구조"],
+    shortTags: ["#객체 지향", "#MVC 패턴"],
     githubUrl: "https://github.com/next-step/java-racingcar",
   },
   {
@@ -26,7 +26,7 @@ export const REPOSITORIES: Repository[] = [
     name: "로또 미션",
     emoji: "🎰",
     description: "원시값 포장, 일급 컬렉션, 그리고 enum 활용까지 자바 기초 설계를 연습하는 미션입니다.",
-    shortTags: ["#원시값포장", "#일급컬렉션", "#ENUM"],
+    shortTags: ["#원시값 포장", "#일급 컬렉션", "#ENUM"],
     githubUrl: "https://github.com/next-step/java-lotto",
   },
   {
@@ -34,7 +34,7 @@ export const REPOSITORIES: Repository[] = [
     name: "사다리 미션",
     emoji: "🪜",
     description: "함수형 프로그래밍 사고방식을 집중적으로 경험하는 자바 심화 미션입니다.",
-    shortTags: ["#함수형프로그래밍"],
+    shortTags: ["#함수형 프로그래밍"],
     githubUrl: "https://github.com/next-step/java-ladder-func-playground",
   },
 ];
