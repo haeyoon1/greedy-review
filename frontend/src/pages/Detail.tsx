@@ -26,8 +26,7 @@ const ITEMS_PER_PAGE = 5;
 
 export default function Detail() {
   const { name } = useParams();
-  console.log(name);
-  let stringName = String(name);
+  const stringName = String(name);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -127,9 +126,6 @@ export default function Detail() {
   );
 }
 
-/* -------------------------------------------------------------- */
-/* 리뷰 카드 */
-/* -------------------------------------------------------------- */
 function ReviewCard({ review, keyword }: { review: Review; keyword?: string }) {
   return (
     <>
@@ -139,7 +135,6 @@ function ReviewCard({ review, keyword }: { review: Review; keyword?: string }) {
       </div>
 
       <div className="review-content">
-        {/* 1️⃣ 코드 스니펫을 먼저 표시 */}
         {review.file_path && (
           <div className="file-path">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
@@ -150,8 +145,6 @@ function ReviewCard({ review, keyword }: { review: Review; keyword?: string }) {
         )}
 
         {review.code_snippet && <DiffCodeBlock code={review.code_snippet} />}
-
-        {/* 2️⃣ 코멘트를 나중에 표시 */}
         <MarkdownComment text={review.comment} keyword={keyword} />
       </div>
 
@@ -174,9 +167,6 @@ function ReviewCard({ review, keyword }: { review: Review; keyword?: string }) {
   );
 }
 
-/* -------------------------------------------------------------- */
-/* 서브 컴포넌트 */
-/* -------------------------------------------------------------- */
 function ReviewerInfo({ review }: { review: Review }) {
   return (
     <div className="reviewer-info">
@@ -206,9 +196,6 @@ function RepoBadge({ repo }: { repo: string }) {
   );
 }
 
-/* -------------------------------------------------------------- */
-/* Markdown Comment (Keyword Highlight) */
-/* -------------------------------------------------------------- */
 function MarkdownComment({
   text,
   keyword,
@@ -244,9 +231,6 @@ function MarkdownComment({
   );
 }
 
-/* -------------------------------------------------------------- */
-/* GitHub Diff 스타일 구현 */
-/* -------------------------------------------------------------- */
 function DiffCodeBlock({ code }: { code: string }) {
   const lines = code.replace(/\\n/g, "\n").split("\n");
 
@@ -297,9 +281,6 @@ function DiffCodeBlock({ code }: { code: string }) {
   );
 }
 
-/* -------------------------------------------------------------- */
-/* Pagination */
-/* -------------------------------------------------------------- */
 function Pagination({
   currentPage,
   totalPages,
@@ -311,14 +292,11 @@ function Pagination({
 }) {
   const pages: (number | string)[] = [];
 
-  // 페이지 번호 계산
   if (totalPages <= 7) {
-    // 7페이지 이하면 모두 표시
     for (let i = 1; i <= totalPages; i++) {
       pages.push(i);
     }
   } else {
-    // 7페이지 초과시 ... 포함
     if (currentPage <= 3) {
       pages.push(1, 2, 3, 4, "...", totalPages);
     } else if (currentPage >= totalPages - 2) {

@@ -130,95 +130,76 @@ NORMALIZED_KEYWORDS = {
 MIN_COUNT = 2
 
 
-# ==========================================================
-#   ReviewService (normalize 기반 매칭)
-# ==========================================================
 class ReviewService:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+
     def __init__(self):
+        if self._initialized:
+            return
         self.reviews = [Review(**r) for r in load_all_reviews()]
+        self._initialized = True
+
+    def _find_synonyms(self, keyword: str) -> list[str]:
+        """주어진 키워드의 동의어 리스트 반환"""
+        normalized_keyword = normalize(keyword)
+
+        for main_key, syn_list in NORMALIZED_KEYWORDS.items():
+            if normalized_keyword == normalize(main_key) or normalized_keyword in syn_list:
+                return syn_list
+
+        return [normalized_keyword]
+
+    def _filter_by_repo(self, reviews: list[Review], repo: str | None) -> list[Review]:
+        """저장소 필터링"""
+        if not repo:
+            return reviews
+        return [r for r in reviews if repo in r.repo]
 
     def get_keyword_stats(self, repo: str | None = None):
         matches: list[str] = []
+        filtered_reviews = self._filter_by_repo(self.reviews, repo)
 
-        for r in self.reviews:
-            if repo and repo not in r.repo:
-                continue
-
+        for r in filtered_reviews:
             text = normalize(r.comment)
 
-            # 그룹 기반 매칭
             for main_key, synonyms in NORMALIZED_KEYWORDS.items():
-                for syn in synonyms:
-                    if syn in text:
-                        matches.append(main_key)
-                        break
+                if any(syn in text for syn in synonyms):
+                    matches.append(main_key)
+                    break
 
         counter = Counter(matches)
-
         filtered = {k: v for k, v in counter.items() if v >= MIN_COUNT}
 
-        sorted_filtered = dict(
+        return dict(
             sorted(filtered.items(), key=lambda x: x[1], reverse=True)[:15]
         )
 
-        return sorted_filtered
-
     def get_reviews_by_keyword(self, keyword: str, repo: str | None = None):
-        keyword = normalize(keyword)
-        synonyms = None
+        synonyms = self._find_synonyms(keyword)
+        result = [
+            r for r in self.reviews
+            if any(syn in normalize(r.comment) for syn in synonyms)
+        ]
 
-        # keyword가 속한 그룹을 찾음
-        for main_key, syn_list in NORMALIZED_KEYWORDS.items():
-            if keyword == normalize(main_key) or keyword in syn_list:
-                synonyms = syn_list
-                break
-
-        # 그룹이 없으면 keyword 자체만 사용
-        if synonyms is None:
-            synonyms = [keyword]
-
-        result: list[Review] = []
-
-        for r in self.reviews:
-            if repo and repo not in r.repo:
-                continue
-
-            text = normalize(r.comment)
-
-            if any(syn in text for syn in synonyms):
-                result.append(r)
-
-        return result
+        return self._filter_by_repo(result, repo)
 
     def search_by_keyword(self, keyword: str, repo: str | None = None):
-        keyword = normalize(keyword)
+        synonyms = self._find_synonyms(keyword)
 
-        # 1) keyword가 속한 synonym 그룹 찾기
-        synonyms = None
-        for main_key, syn_list in NORMALIZED_KEYWORDS.items():
-            if keyword == normalize(main_key) or keyword in syn_list:
-                synonyms = syn_list
-                break
-        if synonyms is None:
-            synonyms = [keyword]
-
-        # 2) keyword가 포함된 리뷰만 먼저 필터링
         matched = [
             r for r in self.reviews
-            if (repo is None or repo in r.repo)
-            and any(syn in normalize(r.comment) for syn in synonyms)
+            if any(syn in normalize(r.comment) for syn in synonyms)
         ]
+        matched = self._filter_by_repo(matched, repo)
 
         if not matched:
             return []
 
-        # 3) matched 리뷰들의 thread_id 추출
         thread_ids = {r.thread_id for r in matched}
-
-        # 4) thread 전체 확장 반환
-        full_threads = [
-            r for r in self.reviews
-            if r.thread_id in thread_ids
-        ]
-
-        return full_threads
+        return [r for r in self.reviews if r.thread_id in thread_ids]

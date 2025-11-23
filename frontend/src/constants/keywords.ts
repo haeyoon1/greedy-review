@@ -1,3 +1,40 @@
+export type RepositoryId =
+  | "next-step/java-racingcar-simple-playground"
+  | "next-step/java-lotto-clean-playground"
+  | "next-step/java-ladder-func-playground";
+
+export interface Repository {
+  id: RepositoryId;
+  name: string;
+  emoji: string;
+  description: string;
+  githubUrl: string;
+}
+
+export const REPOSITORIES: Repository[] = [
+  {
+    id: "next-step/java-racingcar-simple-playground",
+    name: "자동차 경주",
+    emoji: "🏎️",
+    description: "원시값과 일급 컬렉션을 활용한 자동차 경주 게임",
+    githubUrl: "https://github.com/next-step/java-racingcar",
+  },
+  {
+    id: "next-step/java-lotto-clean-playground",
+    name: "로또",
+    emoji: "🎰",
+    description: "TDD와 OOP를 적용한 로또 번호 생성기",
+    githubUrl: "https://github.com/next-step/java-lotto",
+  },
+  {
+    id: "next-step/java-ladder-func-playground",
+    name: "사다리 타기",
+    emoji: "🪜",
+    description: "함수형 프로그래밍을 활용한 사다리 게임",
+    githubUrl: "https://github.com/next-step/java-ladder-func-playground",
+  },
+];
+
 export const KEYWORD_CATEGORIES = {
   oop: {
     name: "객체지향 및 설계 원칙",

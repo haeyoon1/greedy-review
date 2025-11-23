@@ -6,45 +6,14 @@ import Header from "../components/Header";
 import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
-import { KEYWORD_CATEGORIES } from "../constants/keywords";
-
-type Repository =
-  | "next-step/java-racingcar-simple-playground"
-  | "next-step/java-lotto-clean-playground"
-  | "next-step/java-ladder-func-playground";
-
-const REPOSITORIES: {
-  id: Repository;
-  name: string;
-  emoji: string;
-  description: string;
-  githubUrl: string;
-}[] = [
-  {
-    id: "next-step/java-racingcar-simple-playground",
-    name: "자동차 경주",
-    emoji: "🏎️",
-    description: "원시값과 일급 컬렉션을 활용한 자동차 경주 게임",
-    githubUrl: "https://github.com/next-step/java-racingcar",
-  },
-  {
-    id: "next-step/java-lotto-clean-playground",
-    name: "로또",
-    emoji: "🎰",
-    description: "TDD와 OOP를 적용한 로또 번호 생성기",
-    githubUrl: "https://github.com/next-step/java-lotto",
-  },
-  {
-    id: "next-step/java-ladder-func-playground",
-    name: "사다리 타기",
-    emoji: "🪜",
-    description: "함수형 프로그래밍을 활용한 사다리 게임",
-    githubUrl: "https://github.com/next-step/java-ladder-func-playground",
-  },
-];
+import {
+  KEYWORD_CATEGORIES,
+  REPOSITORIES,
+  type RepositoryId,
+} from "../constants/keywords";
 
 export default function Home() {
-  const [selectedRepo, setSelectedRepo] = useState<Repository>(
+  const [selectedRepo, setSelectedRepo] = useState<RepositoryId>(
     "next-step/java-racingcar-simple-playground"
   );
   const [words, setWords] = useState<{ text: string; value: number }[]>([]);
@@ -52,27 +21,17 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 🔥 Vercel 환경 변수 제대로 들어왔는지 확인
-    console.log("ENV CHECK", {
-      SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
-      SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
-    });
-
     setLoading(true);
 
     fetchKeywordStats(selectedRepo)
       .then((stats) => {
         const safeStats = stats ?? {};
-        console.log(`📊 ${selectedRepo} stats:`, safeStats);
-
         const formatted = Object.entries(safeStats).map(([k, v]) => ({
           text: k,
           value: v as number,
         }));
 
-        // 🔥 여기서 4회 이상만 필터링
         const filtered = formatted.filter((item) => item.value >= 4);
-
         setWords(filtered);
       })
       .finally(() => {
@@ -118,7 +77,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* 레포지토리 탭 */}
         <div className="repo-tabs">
           {REPOSITORIES.map((repo) => (
             <button
@@ -135,7 +93,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* 현재 선택된 레포지토리 정보 */}
         <Card variant="outlined" padding="md" className="current-repo-card">
           <div className="current-repo-header">
             <span className="current-repo-emoji">{currentRepo.emoji}</span>
@@ -157,7 +114,6 @@ export default function Home() {
           </a>
         </Card>
 
-        {/* 워드 클라우드 */}
         <Card variant="elevated" padding="lg" className="word-cloud-card">
           {loading ? (
             <div className="loading-state">
@@ -178,7 +134,6 @@ export default function Home() {
           )}
         </Card>
 
-        {/* 카테고리별 Top 키워드 */}
         <div className="category-stats">
           <h3 className="category-stats-title">카테고리별 주요 키워드</h3>
           <div className="category-grid">

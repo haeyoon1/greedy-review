@@ -13,25 +13,8 @@ import ThreadItem from "./ThreadItem";
 import ThreadPagination from "./ThreadPagination";
 import "./ThreadedReviewList.css";
 
-const ITEMS_PER_PAGE = 8; // 한 페이지에 표시할 스레드 수
+const ITEMS_PER_PAGE = 8;
 
-/**
- * 📌 ThreadedReviewList 컴포넌트
- *
- * 역할:
- * - API에서 리뷰 데이터 fetch
- * - 리뷰를 스레드별로 그룹핑
- * - 스레드 목록 표시 및 페이지네이션
- * - 각 스레드의 전개/접기 상태 관리
- *
- * Props: 없음 (useParams로 keyword를 받음)
- *
- * 상태 관리:
- * - threads: 그룹핑된 스레드 배열
- * - currentPage: 현재 페이지
- * - loading: 데이터 로딩 중 여부
- * - searchKeyword: 검색 필터
- */
 export default function ThreadedReviewList() {
   const { name: keyword } = useParams<{ name: string }>();
   const [allThreads, setAllThreads] = useState<ReviewThread[]>([]);
@@ -39,17 +22,12 @@ export default function ThreadedReviewList() {
   const [loading, setLoading] = useState(true);
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  // 검색으로 필터링된 스레드
   const filteredThreads = searchKeyword
     ? filterThreadsByKeyword(allThreads, searchKeyword)
     : allThreads;
 
-  // 페이지네이션 적용
   const paginated = paginateThreads(filteredThreads, currentPage, ITEMS_PER_PAGE);
 
-  // ═══════════════════════════════════════════
-  // 1️⃣ 데이터 로딩 & 그룹핑
-  // ═══════════════════════════════════════════
   useEffect(() => {
     if (!keyword) return;
 
@@ -58,12 +36,10 @@ export default function ThreadedReviewList() {
 
     fetchReviewsByKeyword(keyword)
       .then((reviews: Review[]) => {
-        // 스레드별로 그룹핑
         const threads = groupReviewsByThread(reviews);
         setAllThreads(threads);
       })
-      .catch((error) => {
-        console.error("리뷰 로딩 실패:", error);
+      .catch(() => {
         setAllThreads([]);
       })
       .finally(() => {
@@ -71,16 +47,10 @@ export default function ThreadedReviewList() {
       });
   }, [keyword]);
 
-  // ═══════════════════════════════════════════
-  // 2️⃣ 스레드 전개/접기 토글
-  // ═══════════════════════════════════════════
   const handleToggleThread = (threadId: number) => {
     setAllThreads((prev) => toggleThreadExpansion(prev, threadId));
   };
 
-  // ═══════════════════════════════════════════
-  // 3️⃣ 모든 스레드 전개/접기
-  // ═══════════════════════════════════════════
   const handleExpandAll = () => {
     setAllThreads((prev) => setAllThreadsExpansion(prev, true));
   };
@@ -88,10 +58,6 @@ export default function ThreadedReviewList() {
   const handleCollapseAll = () => {
     setAllThreads((prev) => setAllThreadsExpansion(prev, false));
   };
-
-  // ═══════════════════════════════════════════
-  // UI 렌더링
-  // ═══════════════════════════════════════════
   if (loading) {
     return (
       <div className="threaded-review-loading">
