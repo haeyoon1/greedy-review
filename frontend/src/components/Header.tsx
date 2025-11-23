@@ -36,16 +36,7 @@ export default function Header({ title, showBackButton = false }: HeaderProps) {
 
           <div className="header-brand" onClick={() => navigate("/")}>
             <div className="header-logo">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <circle cx="16" cy="16" r="16" fill="var(--color-primary)" />
-                <path
-                  d="M12 16L15 19L20 14"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <img src="/favicon.png" alt="Greedy Review Logo" width="32" height="32" />
             </div>
             <h1 className="header-title">{title || "Greedy Review"}</h1>
           </div>
