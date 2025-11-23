@@ -109,8 +109,7 @@ export function filterThreadsByKeyword(
     return all.some(
       (comment) =>
         comment.comment.toLowerCase().includes(lowerKeyword) ||
-        comment.reviewer.toLowerCase().includes(lowerKeyword) ||
-        comment.file_path.toLowerCase().includes(lowerKeyword)
+        comment.reviewer.toLowerCase().includes(lowerKeyword)
     );
   });
 }
