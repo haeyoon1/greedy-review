@@ -8,7 +8,10 @@ import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import { KEYWORD_CATEGORIES } from "../constants/keywords";
 
-type Repository = "java-racingcar" | "java-lotto" | "java-ladder";
+type Repository =
+  | "next-step/java-racingcar-simple-playground"
+  | "next-step/java-lotto-clean-playground"
+  | "next-step/java-ladder-func-playground";
 
 const REPOSITORIES: {
   id: Repository;
@@ -18,21 +21,21 @@ const REPOSITORIES: {
   githubUrl: string;
 }[] = [
   {
-    id: "java-racingcar",
+    id: "next-step/java-racingcar-simple-playground",
     name: "자동차 경주",
     emoji: "🏎️",
     description: "원시값과 일급 컬렉션을 활용한 자동차 경주 게임",
     githubUrl: "https://github.com/next-step/java-racingcar",
   },
   {
-    id: "java-lotto",
+    id: "next-step/java-lotto-clean-playground",
     name: "로또",
     emoji: "🎰",
     description: "TDD와 OOP를 적용한 로또 번호 생성기",
     githubUrl: "https://github.com/next-step/java-lotto",
   },
   {
-    id: "java-ladder",
+    id: "next-step/java-ladder-func-playground",
     name: "사다리 타기",
     emoji: "🪜",
     description: "함수형 프로그래밍을 활용한 사다리 게임",
@@ -41,7 +44,9 @@ const REPOSITORIES: {
 ];
 
 export default function Home() {
-  const [selectedRepo, setSelectedRepo] = useState<Repository>("java-lotto");
+  const [selectedRepo, setSelectedRepo] = useState<Repository>(
+    "next-step/java-racingcar-simple-playground"
+  );
   const [words, setWords] = useState<{ text: string; value: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
