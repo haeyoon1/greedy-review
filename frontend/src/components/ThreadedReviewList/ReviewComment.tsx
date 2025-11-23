@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { ThreadComment } from "../../types/review";
 import GithubMarkdown from "../GithubMarkdown";
 import Button from "../Button";
@@ -63,7 +64,7 @@ export default function ReviewComment({
       {/* 코드 스니펫 - 메인 댓글에만 표시 */}
       {isMain && comment.code_snippet && (
         <div className="code-snippet">
-          <DiffCodeBlock code={comment.code_snippet} />
+          <DiffCodeBlock code={comment.code_snippet} maxLines={20} />
         </div>
       )}
 
@@ -76,41 +77,60 @@ export default function ReviewComment({
 }
 
 /** Diff 스타일 코드 블록 */
-function DiffCodeBlock({ code }: { code: string }) {
+interface DiffCodeBlockProps {
+  code: string;
+  maxLines?: number;
+}
+
+function DiffCodeBlock({ code, maxLines = 20 }: DiffCodeBlockProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const lines = code.replace(/\\n/g, "\n").split("\n");
 
+  const displayLines = isExpanded ? lines : lines.slice(0, maxLines);
+  const hasMoreLines = lines.length > maxLines;
+
   return (
-    <pre className="diff-code-block">
-      {lines.map((line, idx) => {
-        const t = line.trim();
-        let bg = "transparent";
-        let color = "#24292e";
+    <div>
+      <pre className="diff-code-block">
+        {displayLines.map((line, idx) => {
+          const t = line.trim();
+          let bg = "transparent";
+          let color = "#24292e";
 
-        if (t.startsWith("@@")) {
-          bg = "#f2f8fc";
-          color = "#0366d6";
-        } else if (t.startsWith("+") && !t.startsWith("+++")) {
-          bg = "#e6ffed";
-          color = "#22863a";
-        } else if (t.startsWith("-") && !t.startsWith("---")) {
-          bg = "#ffeef0";
-          color = "#cb2431";
-        }
+          if (t.startsWith("@@")) {
+            bg = "#f2f8fc";
+            color = "#0366d6";
+          } else if (t.startsWith("+") && !t.startsWith("+++")) {
+            bg = "#e6ffed";
+            color = "#22863a";
+          } else if (t.startsWith("-") && !t.startsWith("---")) {
+            bg = "#ffeef0";
+            color = "#cb2431";
+          }
 
-        return (
-          <div
-            key={idx}
-            style={{
-              whiteSpace: "pre",
-              backgroundColor: bg,
-              color,
-              padding: "2px 6px",
-            }}
-          >
-            {line}
-          </div>
-        );
-      })}
-    </pre>
+          return (
+            <div
+              key={idx}
+              style={{
+                whiteSpace: "pre",
+                backgroundColor: bg,
+                color,
+                padding: "2px 6px",
+              }}
+            >
+              {line}
+            </div>
+          );
+        })}
+      </pre>
+      {hasMoreLines && (
+        <button
+          className="code-expand-btn"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? "▲ 접기" : `▼ ${lines.length - maxLines}줄 더보기`}
+        </button>
+      )}
+    </div>
   );
 }
