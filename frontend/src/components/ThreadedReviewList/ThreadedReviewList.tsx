@@ -99,7 +99,11 @@ export default function ThreadedReviewList() {
           <div className="review-header">
             <div className="header-info">
               <h3 className="review-title">
-                스레드 {filteredThreads.length}개 ({allThreads.length}개 전체)
+                <span className="title-keyword">{keyword}</span>
+                <span className="title-label">관련 리뷰</span>
+                <span className="title-count">
+                  {filteredThreads.length}개 ({allThreads.length}개 전체)
+                </span>
               </h3>
               <div className="expand-controls">
                 <button className="expand-btn" onClick={handleExpandAll}>

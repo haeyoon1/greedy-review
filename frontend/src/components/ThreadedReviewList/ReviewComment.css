@@ -24,11 +24,17 @@
 
 .comment-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: var(--spacing-md);
-  padding-bottom: var(--spacing-md);
+  padding-bottom: 0;
   border-bottom: none;
+}
+
+.comment-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 .author-info {
@@ -152,6 +158,9 @@
   line-height: 1.6;
   color: var(--color-text);
   word-break: break-word;
+  padding-top: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
 }
 
 /* 마크다운 스타일 */
@@ -480,6 +489,13 @@ mark.keyword-highlight {
 @media (max-width: 768px) {
   .comment-header {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .comment-header-right {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
   }
 
   .comment-badges {

@@ -74,6 +74,28 @@
   color: var(--color-text);
   margin: 0;
   letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.title-label {
+  color: var(--color-text);
+}
+
+.title-keyword {
+  color: var(--color-primary);
+  font-weight: 900;
+  padding: 4px 8px;
+  background-color: var(--color-primary-pale);
+  border-radius: 4px;
+}
+
+.title-count {
+  color: var(--color-text-secondary);
+  font-size: 0.85em;
+  font-weight: 600;
 }
 
 /* 전개/접기 버튼 그룹 */

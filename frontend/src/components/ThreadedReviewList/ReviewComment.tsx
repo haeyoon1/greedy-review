@@ -23,7 +23,7 @@ export default function ReviewComment({
 
   return (
     <div className={`review-comment ${isMain ? "main" : "reply"}`}>
-      {/* 댓글 헤더 */}
+      {/* 댓글 헤더 - 작성자 정보 + PR 링크 */}
       <div className="comment-header">
         <div className="author-info">
           <div className="author-avatar">
@@ -35,14 +35,27 @@ export default function ReviewComment({
           </div>
         </div>
 
-        <div className="comment-badges">
-          {comment.repo && (
-            <span className="repo-badge">{comment.repo.split("/")[1]}</span>
-          )}
-          {comment.file_path && (
-            <span className="file-badge">
-              {comment.file_path.split("/").pop()}
-            </span>
+        <div className="comment-header-right">
+          <div className="comment-badges">
+            {comment.repo && (
+              <span className="repo-badge">{comment.repo.split("/")[1]}</span>
+            )}
+            {comment.file_path && (
+              <span className="file-badge">
+                {comment.file_path.split("/").pop()}
+              </span>
+            )}
+          </div>
+
+          {/* PR 링크 - 헤더 우측에 배치 */}
+          {comment.url && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.open(comment.url, "_blank")}
+            >
+              PR #{comment.pr_number} 보기
+            </Button>
           )}
         </div>
       </div>
@@ -58,19 +71,6 @@ export default function ReviewComment({
       <div className="comment-content">
         <GithubMarkdown content={content} highlightKeyword={keyword} />
       </div>
-
-      {/* PR 링크 */}
-      {comment.url && (
-        <div className="comment-footer">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => window.open(comment.url, "_blank")}
-          >
-            PR #{comment.pr_number} 보기
-          </Button>
-        </div>
-      )}
     </div>
   );
 }
