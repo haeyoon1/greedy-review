@@ -57,6 +57,10 @@ export async function fetchKeywordStats(repo: string) {
     .select("comment")
     .eq("repo", repo);
 
+  console.log("🟩 Supabase data:", data);
+  console.log("🟥 Supabase error:", error);
+  
+
   if (error || !data) {
     console.error("❌ fetchKeywordStats 오류:", error);
     return {};

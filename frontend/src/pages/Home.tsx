@@ -47,6 +47,12 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 🔥 Vercel 환경 변수 제대로 들어왔는지 확인
+    console.log("ENV CHECK", {
+      SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
+      SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
+    });
+
     setLoading(true);
 
     fetchKeywordStats(selectedRepo)
