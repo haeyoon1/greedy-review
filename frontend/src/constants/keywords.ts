@@ -8,29 +8,33 @@ export interface Repository {
   name: string;
   emoji: string;
   description: string;
+  shortTags: string[];
   githubUrl: string;
 }
 
 export const REPOSITORIES: Repository[] = [
   {
     id: "next-step/java-racingcar-simple-playground",
-    name: "자동차 경주",
-    emoji: "🏎️",
-    description: "원시값과 일급 컬렉션을 활용한 자동차 경주 게임",
+    name: "자동차 경주 미션",
+    emoji: "🚘",
+    description: "객체 지향 설계와 MVC 구조의 핵심 개념을 다루는 자바 입문 미션입니다.",
+    shortTags: ["#객체지향", "#MVC구조"],
     githubUrl: "https://github.com/next-step/java-racingcar",
   },
   {
     id: "next-step/java-lotto-clean-playground",
-    name: "로또",
+    name: "로또 미션",
     emoji: "🎰",
-    description: "TDD와 OOP를 적용한 로또 번호 생성기",
+    description: "원시값 포장, 일급 컬렉션, 그리고 enum 활용까지 자바 기초 설계를 연습하는 미션입니다.",
+    shortTags: ["#원시값포장", "#일급컬렉션", "#ENUM"],
     githubUrl: "https://github.com/next-step/java-lotto",
   },
   {
     id: "next-step/java-ladder-func-playground",
-    name: "사다리 타기",
+    name: "사다리 미션",
     emoji: "🪜",
-    description: "함수형 프로그래밍을 활용한 사다리 게임",
+    description: "함수형 프로그래밍 사고방식을 집중적으로 경험하는 자바 심화 미션입니다.",
+    shortTags: ["#함수형프로그래밍"],
     githubUrl: "https://github.com/next-step/java-ladder-func-playground",
   },
 ];

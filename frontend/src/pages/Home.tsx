@@ -89,7 +89,13 @@ export default function Home() {
               <span className="repo-emoji">{repo.emoji}</span>
               <div className="repo-info">
                 <div className="repo-name">{repo.name}</div>
-                <div className="repo-description">{repo.description}</div>
+                <div className="repo-tags">
+                  {repo.shortTags.map((tag) => (
+                    <span key={tag} className="repo-tag">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </button>
           ))}

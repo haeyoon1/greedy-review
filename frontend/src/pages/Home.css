@@ -85,6 +85,23 @@
   line-height: 1.5;
 }
 
+.repo-info .repo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+}
+
+.repo-info .repo-tag {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
 /* ================================
    Current Repository Card
    ================================ */
