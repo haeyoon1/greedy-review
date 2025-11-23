@@ -2,7 +2,7 @@
  * API에서 받는 개별 리뷰 데이터
  */
 export interface Review {
-  id?: string;
+  id: string;
   repo: string;
   pr_number: number;
   file_path: string;
