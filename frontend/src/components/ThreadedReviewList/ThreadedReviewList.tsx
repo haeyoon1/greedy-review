@@ -64,6 +64,11 @@ export default function ThreadedReviewList() {
     setAllThreads((prev) => setAllThreadsExpansion(prev, false));
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (loading) {
     return (
       <>
@@ -144,7 +149,7 @@ export default function ThreadedReviewList() {
             <ThreadPagination
               currentPage={paginated.current_page}
               totalPages={paginated.total_pages}
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
             />
           )}
         </div>

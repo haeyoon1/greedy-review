@@ -25,26 +25,33 @@
   background-color: var(--color-white);
   border-radius: var(--radius-md);
   cursor: pointer;
-  color: var(--color-text);
+  color: var(--color-primary);
   transition: all var(--transition-fast);
+}
 
-  &:hover:not(:disabled) {
-    border-color: var(--color-primary);
-    background-color: var(--color-primary-pale);
-    color: var(--color-primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
+.pagination-arrow svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--color-primary);
+  color: var(--color-primary);
+}
 
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+.pagination-arrow:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background-color: var(--color-white);
+  color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
 
-  svg {
-    width: 20px;
-    height: 20px;
-  }
+.pagination-arrow:hover:not(:disabled) svg {
+  stroke: var(--color-primary-dark);
+  color: var(--color-primary-dark);
+}
+
+.pagination-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -72,8 +79,8 @@
 
   &:hover {
     border-color: var(--color-primary);
-    background-color: var(--color-primary-pale);
-    color: var(--color-primary-dark);
+    background-color: var(--color-white);
+    color: var(--color-primary);
     transform: translateY(-2px);
     box-shadow: var(--shadow-sm);
   }
