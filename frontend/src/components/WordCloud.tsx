@@ -61,9 +61,10 @@ export default function WordCloud({ words, onWordClick }: Props) {
       .size([width, height])
       .words(
         words.map((d) => {
-          // 빈도에 따라 크기를 더 극적으로 차이나게 (14px ~ 90px)
-          const normalizedValue = (d.value - minValue) / (maxValue - minValue || 1);
-          const size = 14 + normalizedValue * 76; // 14px ~ 90px
+          // 빈도에 따라 크기를 더 극적으로 차이나게 (30px ~ 120px)
+          const normalizedValue =
+            (d.value - minValue) / (maxValue - minValue || 1);
+          const size = 30 + normalizedValue * 90; // 30px ~ 120px
 
           return {
             text: d.text,
@@ -71,7 +72,7 @@ export default function WordCloud({ words, onWordClick }: Props) {
           };
         })
       )
-      .padding(10)
+      .padding(15)
       .rotate(() => 0) // ✅ 모든 텍스트 가로로만!
       .font("Pretendard, -apple-system, sans-serif")
       .fontSize((d: any) => d.size as number)
@@ -104,7 +105,10 @@ export default function WordCloud({ words, onWordClick }: Props) {
         .style("fill", (_, i) => greenPalette[i % greenPalette.length])
         .style("opacity", 0)
         .attr("text-anchor", "middle")
-        .attr("transform", (d) => `translate(${d.x},${d.y}) rotate(${d.rotate})`)
+        .attr(
+          "transform",
+          (d) => `translate(${d.x},${d.y}) rotate(${d.rotate})`
+        )
         .text((d) => d.text)
         .style("cursor", "pointer")
         .attr("class", "word-cloud-word")

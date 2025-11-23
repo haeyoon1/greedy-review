@@ -31,8 +31,10 @@ export default function Home() {
           value: v as number,
         }));
 
-        const filtered = formatted.filter((item) => item.value >= 4);
-        setWords(filtered);
+        // 빈도 기준으로 정렬 후 상위 20개만 선택
+        const sorted = formatted.sort((a, b) => b.value - a.value);
+        const topWords = sorted.slice(0, 20);
+        setWords(topWords);
       })
       .finally(() => {
         setLoading(false);
