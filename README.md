@@ -1,5 +1,6 @@
 # 🦒 Greedy Review 
 ### 코드 리뷰 키워드 분석 서비스
+https://greedy-review.vercel.app/
 
 **Greedy Review**는 공개된 Java 미션의 PR 리뷰 데이터를 기반으로  
 리뷰에서 반복적으로 등장하는 **키워드**, **학습 난점**을 데이터 기반으로 분석, 시각화하는 학습 플랫폼입니다.
