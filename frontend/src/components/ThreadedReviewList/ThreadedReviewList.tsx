@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchReviewsByKeyword } from "../../api/reviews";
-import type { Review, ReviewThread } from "../../types/review";
+import { fetchThreadsByKeyword } from "../../api/reviews";
+import type { ReviewThread } from "../../types/review";
 import {
   groupReviewsByThread,
   paginateThreads,
@@ -26,7 +26,11 @@ export default function ThreadedReviewList() {
     ? filterThreadsByKeyword(allThreads, searchKeyword)
     : allThreads;
 
-  const paginated = paginateThreads(filteredThreads, currentPage, ITEMS_PER_PAGE);
+  const paginated = paginateThreads(
+    filteredThreads,
+    currentPage,
+    ITEMS_PER_PAGE
+  );
 
   useEffect(() => {
     if (!keyword) return;
@@ -34,17 +38,16 @@ export default function ThreadedReviewList() {
     setLoading(true);
     setCurrentPage(1);
 
-    fetchReviewsByKeyword(keyword)
-      .then((reviews: Review[]) => {
+    console.log("🔥 [Thread] keyword:", keyword);
+
+    fetchThreadsByKeyword(keyword)
+      .then((reviews) => {
+        console.log("📌 fetchThreadsByKeyword 결과:", reviews);
         const threads = groupReviewsByThread(reviews);
+        console.log("📌 groupReviewsByThread:", threads);
         setAllThreads(threads);
       })
-      .catch(() => {
-        setAllThreads([]);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   }, [keyword]);
 
   const handleToggleThread = (threadId: number) => {
@@ -58,6 +61,7 @@ export default function ThreadedReviewList() {
   const handleCollapseAll = () => {
     setAllThreads((prev) => setAllThreadsExpansion(prev, false));
   };
+
   if (loading) {
     return (
       <div className="threaded-review-loading">
@@ -77,31 +81,21 @@ export default function ThreadedReviewList() {
 
   return (
     <div className="threaded-review-list">
-      {/* 헤더: 총 스레드 수, 전개/접기 버튼, 검색 */}
       <div className="review-header">
         <div className="header-info">
           <h3 className="review-title">
             스레드 {filteredThreads.length}개 ({allThreads.length}개 전체)
           </h3>
           <div className="expand-controls">
-            <button
-              className="expand-btn"
-              onClick={handleExpandAll}
-              title="모든 스레드 펼치기"
-            >
+            <button className="expand-btn" onClick={handleExpandAll}>
               ▼ 모두 펼치기
             </button>
-            <button
-              className="collapse-btn"
-              onClick={handleCollapseAll}
-              title="모든 스레드 접기"
-            >
+            <button className="collapse-btn" onClick={handleCollapseAll}>
               ▲ 모두 접기
             </button>
           </div>
         </div>
 
-        {/* 검색 필터 */}
         <div className="search-box">
           <input
             type="text"
@@ -116,7 +110,6 @@ export default function ThreadedReviewList() {
         </div>
       </div>
 
-      {/* 스레드 목록 */}
       <div className="threads-container">
         {paginated.threads.map((thread) => (
           <ThreadItem
@@ -128,7 +121,6 @@ export default function ThreadedReviewList() {
         ))}
       </div>
 
-      {/* 페이지네이션 */}
       {paginated.total_pages > 1 && (
         <ThreadPagination
           currentPage={paginated.current_page}

@@ -36,8 +36,8 @@ export default function ThreadItem({
 
           {is_expanded && (
             <div className="replies-container">
-              {replies.map((reply, idx) => (
-                <div key={idx} className="reply-wrapper">
+              {replies.map((reply) => (
+                <div key={reply.comment_id} className="reply-wrapper">
                   <ReviewComment
                     comment={reply}
                     keyword={keyword}

@@ -12,8 +12,8 @@ export interface Review {
   code_snippet: string;
   url: string;
   is_issue_comment: boolean;
-  comment_id: number;
-  thread_id: number;
+  comment_id: number;   
+  thread_id: number;   
 }
 
 /**
