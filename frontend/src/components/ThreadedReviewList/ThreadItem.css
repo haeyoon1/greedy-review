@@ -9,14 +9,7 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   background-color: var(--color-white);
-  transition: all var(--transition-base);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.thread-item:hover {
-  border-color: var(--color-primary);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
 }
 
 /* ═══════════════════════════════════════════════════
