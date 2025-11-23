@@ -28,7 +28,7 @@
   justify-content: space-between;
   gap: var(--spacing-md);
   padding-bottom: var(--spacing-md);
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: none;
 }
 
 .author-info {
@@ -82,7 +82,7 @@
 .repo-badge,
 .file-badge {
   display: inline-block;
-  padding: 4px 8px;
+  padding: 5px 10px;
   border-radius: var(--radius-sm);
   font-size: 0.75rem;
   font-weight: 500;
@@ -93,15 +93,15 @@
 }
 
 .repo-badge {
-  background-color: var(--color-primary-pale);
+  background-color: #e8f0ff;
   color: var(--color-primary-dark);
-  border: 1px solid var(--color-primary-light);
+  border: 1px solid #d0e1ff;
 }
 
 .file-badge {
-  background-color: var(--color-orange-pale);
+  background-color: #fff5e8;
   color: var(--color-orange-dark);
-  border: 1px solid var(--color-orange-light);
+  border: 1px solid #ffe8c4;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -109,14 +109,14 @@
    ═══════════════════════════════════════════════════ */
 
 .code-snippet {
-  margin: var(--spacing-md) 0;
+  margin: 12px 0;
 }
 
 .diff-code-block {
   background-color: #f6f8fa;
-  border: 1px solid #d0d7de;
+  border: 1px solid #d1d9e0;
   border-radius: var(--radius-md);
-  padding: var(--spacing-md);
+  padding: 12px;
   overflow-x: auto;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.85rem;
@@ -469,7 +469,8 @@ mark.keyword-highlight {
   display: flex;
   justify-content: flex-end;
   padding-top: var(--spacing-md);
-  border-top: 1px solid var(--color-border-light);
+  margin-top: var(--spacing-md);
+  border-top: none;
 }
 
 /* ═══════════════════════════════════════════════════

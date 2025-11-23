@@ -11,6 +11,8 @@ import {
 } from "../../utils/threadGrouping";
 import ThreadItem from "./ThreadItem";
 import ThreadPagination from "./ThreadPagination";
+import Header from "../Header";
+import Container from "../Container";
 import "./ThreadedReviewList.css";
 
 const ITEMS_PER_PAGE = 8;
@@ -64,70 +66,85 @@ export default function ThreadedReviewList() {
 
   if (loading) {
     return (
-      <div className="threaded-review-loading">
-        <div className="spinner"></div>
-        <p>리뷰를 불러오는 중...</p>
-      </div>
+      <>
+        <Header title="Greedy Review" showBackButton />
+        <Container maxWidth="xl">
+          <div className="threaded-review-loading">
+            <div className="spinner"></div>
+            <p>리뷰를 불러오는 중...</p>
+          </div>
+        </Container>
+      </>
     );
   }
 
   if (allThreads.length === 0) {
     return (
-      <div className="threaded-review-empty">
-        <p>관련 리뷰가 없습니다.</p>
-      </div>
+      <>
+        <Header title="Greedy Review" showBackButton />
+        <Container maxWidth="xl">
+          <div className="threaded-review-empty">
+            <p>관련 리뷰가 없습니다.</p>
+          </div>
+        </Container>
+      </>
     );
   }
 
   return (
-    <div className="threaded-review-list">
-      <div className="review-header">
-        <div className="header-info">
-          <h3 className="review-title">
-            스레드 {filteredThreads.length}개 ({allThreads.length}개 전체)
-          </h3>
-          <div className="expand-controls">
-            <button className="expand-btn" onClick={handleExpandAll}>
-              ▼ 모두 펼치기
-            </button>
-            <button className="collapse-btn" onClick={handleCollapseAll}>
-              ▲ 모두 접기
-            </button>
+    <>
+      <Header title="Greedy Review" showBackButton />
+      <Container maxWidth="xl">
+        <div className="threaded-review-list">
+          <div className="review-header">
+            <div className="header-info">
+              <h3 className="review-title">
+                스레드 {filteredThreads.length}개 ({allThreads.length}개 전체)
+              </h3>
+              <div className="expand-controls">
+                <button className="expand-btn" onClick={handleExpandAll}>
+                  ▼ 모두 펼치기
+                </button>
+                <button className="collapse-btn" onClick={handleCollapseAll}>
+                  ▲ 모두 접기
+                </button>
+              </div>
+            </div>
+
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="스레드 검색..."
+                value={searchKeyword}
+                onChange={(e) => {
+                  setSearchKeyword(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="search-input"
+              />
+            </div>
           </div>
+
+          <div className="threads-container">
+            {paginated.threads.map((thread) => (
+              <ThreadItem
+                key={thread.thread_id}
+                thread={thread}
+                onToggle={handleToggleThread}
+                keyword={keyword}
+              />
+            ))}
+          </div>
+
+          {paginated.total_pages > 1 && (
+            <ThreadPagination
+              currentPage={paginated.current_page}
+              totalPages={paginated.total_pages}
+              onPageChange={setCurrentPage}
+            />
+          )}
         </div>
-
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="스레드 검색..."
-            value={searchKeyword}
-            onChange={(e) => {
-              setSearchKeyword(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="search-input"
-          />
-        </div>
-      </div>
-
-      <div className="threads-container">
-        {paginated.threads.map((thread) => (
-          <ThreadItem
-            key={thread.thread_id}
-            thread={thread}
-            onToggle={handleToggleThread}
-            keyword={keyword}
-          />
-        ))}
-      </div>
-
-      {paginated.total_pages > 1 && (
-        <ThreadPagination
-          currentPage={paginated.current_page}
-          totalPages={paginated.total_pages}
-          onPageChange={setCurrentPage}
-        />
-      )}
-    </div>
+      </Container>
+    </>
   );
 }

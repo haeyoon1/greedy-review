@@ -10,12 +10,13 @@
   overflow: hidden;
   background-color: var(--color-white);
   transition: all var(--transition-base);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .thread-item:hover {
-  border-color: var(--color-primary-light);
-  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -23,9 +24,9 @@
    ═══════════════════════════════════════════════════ */
 
 .main-comment-wrapper {
-  padding: var(--spacing-lg);
+  padding: 20px;
   background-color: var(--color-white);
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 2px solid var(--color-border);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -33,10 +34,10 @@
    ═══════════════════════════════════════════════════ */
 
 .reply-toggle {
-  padding: var(--spacing-md) var(--spacing-lg);
-  background-color: var(--color-bg);
+  padding: 12px 16px;
+  background-color: #f5f7fa;
   border: none;
-  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
   color: var(--color-primary);
   font-size: 0.95rem;
   font-weight: 600;
@@ -48,18 +49,19 @@
 
   /* 하버 효과 */
   &:hover {
-    background-color: var(--color-primary-pale);
+    background-color: #e8f0ff;
     color: var(--color-primary-dark);
   }
 
   /* 활성 상태 (펼쳐짐) */
   &.expanded {
-    background-color: var(--color-primary-pale);
-    border-bottom: none;
+    background-color: #e8f0ff;
+    border-top: none;
+    border-bottom: 1px solid var(--color-border);
   }
 
   &.expanded:hover {
-    background-color: var(--color-primary-pale);
+    background-color: #dce5ff;
     color: var(--color-primary-dark);
   }
 }
@@ -90,8 +92,8 @@
 .replies-container {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-bg);
-  animation: slideDown 200ms ease-out;
+  background-color: #fafbfc;
+  animation: slideDown 250ms ease-out;
 }
 
 @keyframes slideDown {
@@ -101,21 +103,22 @@
   }
   to {
     opacity: 1;
-    max-height: 1000px;
+    max-height: 2000px;
   }
 }
 
 .reply-wrapper {
-  padding: var(--spacing-lg);
-  border-bottom: 1px solid var(--color-border-light);
+  padding: 20px;
+  border-bottom: 1px solid var(--color-border);
   background-color: var(--color-white);
+  border-left: 3px solid var(--color-primary);
 
   &:last-child {
     border-bottom: none;
   }
 
   /* 마진으로 답글 들여쓰기 효과 */
-  margin-left: var(--spacing-lg);
+  margin-left: 12px;
 }
 
 /* ═══════════════════════════════════════════════════
