@@ -47,8 +47,8 @@ export default function ReviewComment({
         </div>
       </div>
 
-      {/* 코드 스니펫 */}
-      {comment.code_snippet && (
+      {/* 코드 스니펫 - 메인 댓글에만 표시 */}
+      {isMain && comment.code_snippet && (
         <div className="code-snippet">
           <DiffCodeBlock code={comment.code_snippet} />
         </div>
