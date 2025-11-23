@@ -51,35 +51,31 @@ export async function fetchReviewsByKeyword(keyword: string): Promise<Review[]> 
 
 // 키워드 통계 (레포지토리별)
 export async function fetchKeywordStats(repo: string) {
-  // 1) Supabase에서 해당 repo 리뷰 불러오기
   const { data, error } = await supabase
     .from("reviews")
     .select("comment")
-    .eq("repo", repo);
+    .ilike("repo", `%${repo}%`);
 
   console.log("🟩 Supabase data:", data);
   console.log("🟥 Supabase error:", error);
-  
 
   if (error || !data) {
     console.error("❌ fetchKeywordStats 오류:", error);
     return {};
   }
 
-  // 2) 키워드 카운팅을 위한 기본 객체
   const keywordCounts: Record<string, number> = {};
 
-  // 3) 모든 댓글에서 키워드 검사
   data.forEach(({ comment }) => {
     if (!comment) return;
 
-    // 모든 키워드를 한번에 처리
     Object.values(KEYWORD_CATEGORIES).forEach((category) => {
       category.keywords.forEach((keyword) => {
         const regex = new RegExp(keyword, "gi");
         const matches = comment.match(regex);
         if (matches) {
-          keywordCounts[keyword] = (keywordCounts[keyword] || 0) + matches.length;
+          keywordCounts[keyword] =
+            (keywordCounts[keyword] || 0) + matches.length;
         }
       });
     });
