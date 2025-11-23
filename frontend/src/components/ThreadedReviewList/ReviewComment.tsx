@@ -1,10 +1,5 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { github as githubStyle } from "react-syntax-highlighter/dist/esm/styles/prism";
 import type { ThreadComment } from "../../types/review";
+import GithubMarkdown from "../GithubMarkdown";
 import Button from "../Button";
 import "./ReviewComment.css";
 
@@ -12,59 +7,6 @@ interface ReviewCommentProps {
   comment: ThreadComment;
   keyword?: string;
   isMain: boolean;
-}
-
-/** 🔥 코드블록 / 인라인코드 제외 텍스트 노드 하이라이트 함수 */
-function highlightKeyword(markdown: string, keyword?: string) {
-  if (!keyword) return markdown;
-
-  // 정규식 escape
-  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`(${escaped})`, "gi");
-
-  // 코드블록 먼저 보존
-  const parts = markdown.split(/(```[\s\S]*?```)/g);
-
-  return parts
-    .map((part) => {
-      if (part.startsWith("```")) return part; // 코드블록은 그대로
-      // 인라인코드 보존
-      const segments = part.split(/(`[^`]*`)/g);
-      return segments
-        .map((seg) => {
-          if (seg.startsWith("`") && seg.endsWith("`")) return seg;
-          return seg.replace(
-            regex,
-            `<mark class="keyword-highlight">$1</mark>`
-          );
-        })
-        .join("");
-    })
-    .join("");
-}
-
-/** 🔥 ReactMarkdown의 노드를 후처리해서 하이라이트 적용 */
-function renderWithHighlight(children: any, keyword?: string) {
-  return children.map((child: any, i: number) => {
-    if (typeof child === "string") {
-      return (
-        <span
-          key={i}
-          dangerouslySetInnerHTML={{
-            __html: highlightKeyword(child, keyword || ""),
-          }}
-        />
-      );
-    }
-    if (child?.props?.children) {
-      return (
-        <child.type key={i} {...child.props}>
-          {renderWithHighlight(child.props.children, keyword)}
-        </child.type>
-      );
-    }
-    return child;
-  });
 }
 
 export default function ReviewComment({
@@ -112,103 +54,9 @@ export default function ReviewComment({
         </div>
       )}
 
-      {/* 🔥 마크다운 + 코드블록 + 하이라이트 */}
+      {/* 마크다운 렌더링 */}
       <div className="comment-content">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[
-            rehypeRaw,
-            [
-              rehypeSanitize,
-              {
-                tagNames: [
-                  "h1",
-                  "h2",
-                  "h3",
-                  "h4",
-                  "h5",
-                  "h6",
-                  "p",
-                  "br",
-                  "em",
-                  "strong",
-                  "a",
-                  "ul",
-                  "ol",
-                  "li",
-                  "blockquote",
-                  "code",
-                  "pre",
-                  "hr",
-                  "img",
-                  "table",
-                  "thead",
-                  "tbody",
-                  "tr",
-                  "th",
-                  "td",
-                  "del",
-                  "span",
-                  "div",
-                  "mark",
-                ],
-                attributes: {
-                  a: ["href", "title"],
-                  code: ["className"],
-                  mark: ["class"],
-                  img: ["src", "alt"],
-                },
-              },
-            ],
-          ]}
-          components={{
-            code: ({ inline, className, children, ...props }: any) => {
-              const match = /language-(\w+)/.exec(className || "");
-              const language = match ? match[1] : "text";
-
-              if (inline)
-                return (
-                  <code className="inline-code" {...props}>
-                    {children}
-                  </code>
-                );
-
-              const codeString = String(children).replace(/\n$/, "");
-              return (
-                <SyntaxHighlighter
-                  language={language}
-                  style={githubStyle}
-                  PreTag="div"
-                  customStyle={{
-                    borderRadius: "6px",
-                    fontSize: "14px",
-                    backgroundColor: "#f6f8fa",
-                  }}
-                >
-                  {codeString}
-                </SyntaxHighlighter>
-              );
-            },
-          }}
-        >
-          {content}
-        </ReactMarkdown>
-
-        {/* 🔥 하이라이트 후처리 */}
-        <div className="highlight-wrapper">
-          {renderWithHighlight(
-            [
-              <ReactMarkdown
-                key="preview"
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-              >
-                {content}
-              </ReactMarkdown>,
-            ],
-            keyword
-          )}
-        </div>
+        <GithubMarkdown content={content} highlightKeyword={keyword} />
       </div>
 
       {/* PR 링크 */}
@@ -227,7 +75,7 @@ export default function ReviewComment({
   );
 }
 
-/** Diff 스타일 코드 블록 그대로 유지 */
+/** Diff 스타일 코드 블록 */
 function DiffCodeBlock({ code }: { code: string }) {
   const lines = code.replace(/\\n/g, "\n").split("\n");
 

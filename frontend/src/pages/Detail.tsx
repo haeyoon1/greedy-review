@@ -5,10 +5,8 @@ import Container from "../components/Container";
 import Header from "../components/Header";
 import Card from "../components/Card";
 import Button from "../components/Button";
+import GithubMarkdown from "../components/GithubMarkdown";
 import "./Detail.css";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 
 interface Review {
   id: string;
@@ -212,21 +210,9 @@ function MarkdownComment({
     content = content.replace(urlPattern, (url) => `[${url}](${url})`);
   }
 
-  if (keyword) {
-    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const regex = new RegExp(`(${escaped})`, "gi");
-
-    content = content.replace(
-      regex,
-      `<mark class="keyword-highlight">$1</mark>`
-    );
-  }
-
   return (
     <div className="review-comment">
-      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-        {content.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n")}
-      </ReactMarkdown>
+      <GithubMarkdown content={content} highlightKeyword={keyword} />
     </div>
   );
 }
